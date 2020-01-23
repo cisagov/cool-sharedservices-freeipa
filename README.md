@@ -2,9 +2,9 @@
 
 [![GitHub Build Status](https://github.com/cisagov/cool-shared-services-freeipa/workflows/build/badge.svg)](https://github.com/cisagov/cool-shared-services-freeipa/actions)
 
-This is a Terraform deployment that creates a FreeIPA master and
-multiple FreeIPA replicas in the COOL shared services environment.
-This deployment should be laid down on top of
+This is a Terraform module for creating a FreeIPA master and multiple
+FreeIPA replicas in the COOL shared services environment.  This
+deployment should be laid down on top of
 [cisagov/cool-shared-services-networking](https://github.com/cisagov/cool-shared-services-networking).
 
 ## Usage ##
