@@ -2,9 +2,9 @@
 
 [![GitHub Build Status](https://github.com/cisagov/cool-shared-services-freeipa/workflows/build/badge.svg)](https://github.com/cisagov/cool-shared-services-freeipa/actions)
 
-This is a Terraform deployment that creates a FreeIPA master and
-multiple FreeIPA replicas in the COOL shared services environment.
-This deployment should be laid down on top of
+This is a Terraform module for creating a FreeIPA master and multiple
+FreeIPA replicas in the COOL shared services environment.  This
+deployment should be laid down on top of
 [cisagov/cool-shared-services-networking](https://github.com/cisagov/cool-shared-services-networking).
 
 ## Usage ##
@@ -16,7 +16,7 @@ module "example" {
   admin_pw                         = "thepassword"
   aws_region                       = "us-east-1"
   cert_bucket_name                 = "certbucket"
-  cert_role_arn                    = "arn:aws:iam::123456789012:role/ReadCert-example.com"
+  cert_create_read_role_arn        = "arn:aws:iam::123456789012:role/CertCreateReadRole"
   cool_domain                      = "example.com"
   default_role_arn                 = "arn:aws:iam::123456789012:role/TerraformRole"
   directory_service_pw             = "thepassword"
@@ -51,7 +51,7 @@ module "example" {
 | admin_pw | The password for the Kerberos admin role. | string | | yes |
 | aws_region | The AWS region to deploy into (e.g. us-east-1). | string | | yes |
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cool-certificates` | no |
-| cert_role_arn | The ARN of the role to assume when creating a role to allow reading certboto certificate data (e.g. "arn:aws:iam::123456789012:role/ReadCert-example.com"). | string | | yes |
+| cert_create_read_role_arn | The ARN of the role to assume when creating a role to allow reading certboto certificate data (e.g. "arn:aws:iam::123456789012:role/CertCreateReadRole"). | string | | yes |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | default_role_arn | The ARN of the role to assume when performing most Terraform tasks (e.g. "arn:aws:iam::123456789012:role/TerraformRole"). | string | | yes |
 | directory_service_pw | The password for the IPA master's directory service. | string | | yes |

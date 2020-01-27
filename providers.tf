@@ -16,10 +16,10 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "cert_read_role"
+  alias  = "cert_create_read_role"
   region = var.aws_region
   assume_role {
-    role_arn     = var.cert_role_arn
+    role_arn     = var.cert_create_read_role_arn
     session_name = "terraform-cert"
   }
 }
