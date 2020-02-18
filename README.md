@@ -51,11 +51,8 @@ module "example" {
 | admin_pw | The password for the Kerberos admin role. | string | | yes |
 | aws_region | The AWS region to deploy into (e.g. us-east-1). | string | | yes |
 | cert_bucket_name | The name of the AWS S3 bucket where certificates are stored. | string | `cool-certificates` | no |
-| cert_create_read_role_arn | The ARN of the role to assume when creating a role to allow reading certboto certificate data (e.g. "arn:aws:iam::123456789012:role/CertCreateReadRole"). | string | | yes |
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
-| default_role_arn | The ARN of the role to assume when performing most Terraform tasks (e.g. "arn:aws:iam::123456789012:role/TerraformRole"). | string | | yes |
 | directory_service_pw | The password for the IPA master's directory service. | string | | yes |
-| dns_role_arn | The ARN of the role to assume when performing public DNS Terraform tasks (e.g. "arn:aws:iam::123456789012:role/DnsRole"). | string | | yes |
 | master_cert_pw | The password for the IPA master's certificate. | string | | yes |
 | master_private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone appropriate for the IPA master (e.g. "Z01234567YYYYY89FFF0T"). | string | | yes |
 | master_subnet_id | The ID of the subnet where the IPA master is to be deployed (e.g. "subnet-0123456789abcdef0"). | string | | yes |

@@ -8,20 +8,8 @@ variable "admin_pw" {
   description = "The password for the Kerberos admin role."
 }
 
-variable "cert_create_read_role_arn" {
-  description = "The ARN of the role to assume when creating a role to allow reading certboto certificate data (e.g. \"arn:aws:iam::123456789012:role/CertCreateReadRole\")."
-}
-
-variable "default_role_arn" {
-  description = "The ARN of the role to assume when performing most Terraform tasks (e.g. \"arn:aws:iam::123456789012:role/TerraformRole\")."
-}
-
 variable "directory_service_pw" {
   description = "The password for the IPA master's directory service."
-}
-
-variable "dns_role_arn" {
-  description = "The ARN of the role to assume when performing public DNS Terraform tasks (e.g. \"arn:aws:iam::123456789012:role/DnsRole\")."
 }
 
 variable "master_cert_pw" {
