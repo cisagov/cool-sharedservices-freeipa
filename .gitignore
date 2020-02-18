@@ -1,5 +1,6 @@
 __pycache__
 .python-version
 .terraform
+*.tfvars
 terraform.tfstate
 terraform.tfstate.backup
