@@ -1,17 +1,17 @@
-# cool-shared-services-freeipa #
+# cool-sharedservices-freeipa #
 
-[![GitHub Build Status](https://github.com/cisagov/cool-shared-services-freeipa/workflows/build/badge.svg)](https://github.com/cisagov/cool-shared-services-freeipa/actions)
+[![GitHub Build Status](https://github.com/cisagov/cool-sharedservices-freeipa/workflows/build/badge.svg)](https://github.com/cisagov/cool-sharedservices-freeipa/actions)
 
 This is a Terraform module for creating a FreeIPA master and multiple
 FreeIPA replicas in the COOL shared services environment.  This
 deployment should be laid down on top of
-[cisagov/cool-shared-services-networking](https://github.com/cisagov/cool-shared-services-networking).
+[cisagov/cool-sharedservices-networking](https://github.com/cisagov/cool-sharedservices-networking).
 
 ## Usage ##
 
 ```hcl
 module "example" {
-  source = "github.com/cisagov/cool-shared-services-freeipa"
+  source = "github.com/cisagov/cool-sharedservices-freeipa"
 
   admin_pw                         = "thepassword"
   aws_region                       = "us-east-1"
