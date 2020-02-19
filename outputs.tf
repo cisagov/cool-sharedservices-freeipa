@@ -3,7 +3,7 @@ output "client_security_group_id" {
   description = "The ID corresponding to the IPA client security group."
 }
 
-output "master_cert_read_role_arn" {
+output "master_certificate_read_role_arn" {
   value       = module.certreadrole_ipa_master.arn
   description = "The ARN corresponding to the role used by the IPA master to read its certificate information."
 }
@@ -13,7 +13,7 @@ output "master_id" {
   description = "The EC2 instance ID corresponding to the IPA master."
 }
 
-output "replica1_cert_read_role_arn" {
+output "replica1_certificate_read_role_arn" {
   value       = module.certreadrole_ipa_replica1.arn
   description = "The ARN corresponding to the role used by the first IPA replica to read its certificate information."
 }
@@ -23,7 +23,7 @@ output "replica1_id" {
   description = "The EC2 instance ID corresponding to the first IPA replica."
 }
 
-output "replica2_cert_read_role_arn" {
+output "replica2_certificate_read_role_arn" {
   value       = module.certreadrole_ipa_replica2.arn
   description = "The ARN corresponding to the role used by the second IPA replica to read its certificate information."
 }
