@@ -10,7 +10,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias   = "cert_create_read_role"
+  alias   = "provision_certificate_read_role"
   profile = "cool-dns-provisioncertificatereadroles"
   region  = var.aws_region
 }
