@@ -74,14 +74,14 @@ module "example" {
 
 | Name | Description |
 |------|-------------|
-| client_security_group_id | The ID corresponding to the IPA client security group. |
-| master_certificate_read_role_arn | The ARN corresponding to the role used by the IPA master to read its certificate information. |
-| master_id | The EC2 instance ID corresponding to the IPA master. |
-| replica1_certificate_read_role_arn | The ARN corresponding to the role used by the first IPA replica to read its certificate information. |
-| replica1_id | The EC2 instance ID corresponding to the first IPA replica. |
-| replica2_certificate_read_role_arn | The ARN corresponding to the role used by the second IPA replica to read its certificate information. |
-| replica2_id | The EC2 instance ID corresponding to the second IPA replica. |
-| server_security_group_id | The ID corresponding to the IPA server security group. |
+| client_security_group | The IPA client security group. |
+| master_certificate_read_role | The IAM role used by the IPA master to read its certificate information. |
+| master | The IPA master EC2 instance. |
+| replica1_certificate_read_role | The IAM role used by the first IPA replica to read its certificate information. |
+| replica1 | The first IPA replica EC2 instance. |
+| replica2_certificate_read_role | The IAM role used by the second IPA replica to read its certificate information. |
+| replica2 | The second IPA replica EC2 instance. |
+| server_security_group | The IPA server security group. |
 
 ## Contributing ##
 
