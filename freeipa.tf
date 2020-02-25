@@ -10,6 +10,7 @@ module "ipa_master" {
   }
 
   admin_pw                    = var.admin_pw
+  ami_owner_account_id        = "207871073513" # The COOL Images account
   associate_public_ip_address = true
   cert_bucket_name            = var.cert_bucket_name
   cert_pw                     = var.master_cert_pw
@@ -35,6 +36,7 @@ module "ipa_replica1" {
   }
 
   admin_pw                    = var.admin_pw
+  ami_owner_account_id        = "207871073513" # The COOL Images account
   associate_public_ip_address = true
   cert_bucket_name            = var.cert_bucket_name
   cert_pw                     = var.replica1_cert_pw
@@ -58,6 +60,7 @@ module "ipa_replica2" {
   }
 
   admin_pw                    = var.admin_pw
+  ami_owner_account_id        = "207871073513" # The COOL Images account
   associate_public_ip_address = true
   cert_bucket_name            = var.cert_bucket_name
   cert_pw                     = var.replica2_cert_pw
