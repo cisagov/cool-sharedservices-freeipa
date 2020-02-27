@@ -65,7 +65,7 @@ variable "aws_region" {
 
 variable "cert_bucket_name" {
   description = "The name of the AWS S3 bucket where certificates are stored."
-  default     = "cool-certificates"
+  default     = "cisa-cool-certificates"
 }
 
 variable "cool_domain" {
