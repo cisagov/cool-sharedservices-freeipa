@@ -16,40 +16,12 @@ variable "master_cert_pw" {
   description = "The password for the IPA master's certificate."
 }
 
-variable "master_private_reverse_zone_id" {
-  description = "The zone ID corresponding to the private Route53 reverse zone appropriate for the IPA master (e.g. \"Z01234567YYYYY89FFF0T\")."
-}
-
-variable "master_subnet_id" {
-  description = "The ID of the subnet where the IPA master is to be deployed (e.g. \"subnet-0123456789abcdef0\")."
-}
-
-variable "private_zone_id" {
-  description = "The zone ID corresponding to the private Route53 zone for the COOL shared services VPC (e.g. \"Z01234567YYYYY89FFF0T\")."
-}
-
 variable "replica1_cert_pw" {
   description = "The password for the first IPA replica's certificate."
 }
 
-variable "replica1_private_reverse_zone_id" {
-  description = "The zone ID corresponding to the private Route53 reverse zone appropriate for the first IPA replica (e.g. \"Z01234567YYYYY89FFF0T\")."
-}
-
-variable "replica1_subnet_id" {
-  description = "The ID of the subnet where the first IPA replica is to be deployed (e.g. \"subnet-0123456789abcdef0\")."
-}
-
 variable "replica2_cert_pw" {
   description = "The password for the second IPA replica's certificate."
-}
-
-variable "replica2_private_reverse_zone_id" {
-  description = "The zone ID corresponding to the private Route53 reverse zone appropriate for the second IPA replica (e.g. \"Z01234567YYYYY89FFF0T\")."
-}
-
-variable "replica2_subnet_id" {
-  description = "The ID of the subnet where the second IPA replica is to be deployed (e.g. \"subnet-0123456789abcdef0\")."
 }
 
 # ------------------------------------------------------------------------------

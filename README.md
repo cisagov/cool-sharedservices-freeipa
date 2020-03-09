@@ -23,16 +23,9 @@ module "example" {
   dns_role_arn                     = "arn:aws:iam::123456789012:role/DnsRole"
   hostname                         = "ipa.example.com"
   master_cert_pw                   = "lemmy"
-  master_private_reverse_zone_id   = "ZLY47KYR9X93M"
-  master_subnet_id                 = "subnet-0123456789abcdef0"
-  private_zone_id                  = "ZKX36JXQ8W82L"
   public_zone_name                 = "ipa.example.gov"
   replica1_cert_pw                 = "lemmy"
-  replica1_private_reverse_zone_id = "ZLY47KYR9X93N"
-  replica1_subnet_id               = "subnet-0123456789abcdef1"
   replica2_cert_pw                 = "lemmy"
-  replica2_private_reverse_zone_id = "ZLY47KYR9X93N"
-  replica2_subnet_id               = "subnet-0123456789abcdef1"
   tags                             = {
     Key1 = "Value1"
     Key2 = "Value2"
@@ -54,19 +47,12 @@ module "example" {
 | cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | string | `cool.cyber.dhs.gov` | no |
 | directory_service_pw | The password for the IPA master's directory service. | string | | yes |
 | master_cert_pw | The password for the IPA master's certificate. | string | | yes |
-| master_private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone appropriate for the IPA master (e.g. "Z01234567YYYYY89FFF0T"). | string | | yes |
-| master_subnet_id | The ID of the subnet where the IPA master is to be deployed (e.g. "subnet-0123456789abcdef0"). | string | | yes |
-| private_zone_id | The zone ID corresponding to the private Route53 zone for the COOL shared services VPC (e.g. "Z01234567YYYYY89FFF0T"). | string | | yes |
 | provisionaccount_role_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account. | string | `ProvisionAccount` | no |
 | provisionfreeipa_policy_description | The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | string | `Allows provisioning of FreeIPA in the Shared Services account.` | no |
 | provisionfreeipa_policy_name | The name to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | string | `ProvisionFreeIPA` | no |
 | public_zone_name | The name of the public Route53 zone where public DNS records should be created (e.g. "cyber.dhs.gov."). | string | `cyber.dhs.gov` | no |
 | replica1_cert_pw | The password for the first IPA replica's certificate. | string | | yes |
-| replica1_private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone appropriate for the first IPA replica (e.g. "Z01234567YYYYY89FFF0T"). | string | | yes |
-| replica1_subnet_id | The ID of the subnet where the first IPA replica is to be deployed (e.g. "subnet-0123456789abcdef0"). | string | | yes |
 | replica2_cert_pw | The password for the second IPA replica's certificate. | string | | yes |
-| replica2_private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone appropriate for the second IPA replica (e.g. "Z01234567YYYYY89FFF0T"). | string | | yes |
-| replica2_subnet_id | The ID of the subnet where the second IPA replica is to be deployed (e.g. "subnet-0123456789abcdef0"). | string | | yes |
 | tags | Tags to apply to all AWS resources created. | map(string) | `{}` | no |
 | trusted_cidr_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | list(string) | `[]` | no |
 
