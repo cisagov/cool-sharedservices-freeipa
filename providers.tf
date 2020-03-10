@@ -1,25 +1,16 @@
 provider "aws" {
-  region = var.aws_region
-  assume_role {
-    role_arn     = var.default_role_arn
-    session_name = "terraform-default"
-  }
+  profile = "cool-sharedservices-provisionaccount"
+  region  = var.aws_region
 }
 
 provider "aws" {
-  alias  = "public_dns"
-  region = var.aws_region
-  assume_role {
-    role_arn     = var.dns_role_arn
-    session_name = "terraform-public-dns"
-  }
+  alias   = "public_dns"
+  profile = "cool-olddns-route53fullaccess"
+  region  = var.aws_region
 }
 
 provider "aws" {
-  alias  = "cert_create_read_role"
-  region = var.aws_region
-  assume_role {
-    role_arn     = var.cert_create_read_role_arn
-    session_name = "terraform-cert"
-  }
+  alias   = "provision_certificate_read_role"
+  profile = "cool-dns-provisioncertificatereadroles"
+  region  = var.aws_region
 }

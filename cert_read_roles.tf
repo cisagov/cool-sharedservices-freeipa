@@ -11,7 +11,7 @@ module "certreadrole_ipa_master" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
   providers = {
-    aws = aws.cert_create_read_role
+    aws = aws.provision_certificate_read_role
   }
 
   account_ids = [
@@ -25,7 +25,7 @@ module "certreadrole_ipa_replica1" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
   providers = {
-    aws = aws.cert_create_read_role
+    aws = aws.provision_certificate_read_role
   }
 
   account_ids = [
@@ -39,7 +39,7 @@ module "certreadrole_ipa_replica2" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
   providers = {
-    aws = aws.cert_create_read_role
+    aws = aws.provision_certificate_read_role
   }
 
   account_ids = [
