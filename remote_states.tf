@@ -16,5 +16,5 @@ data "terraform_remote_state" "networking" {
     key            = "cool-sharedservices-networking/terraform.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
