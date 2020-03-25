@@ -52,7 +52,6 @@ module "ipa_master" {
   hostname                    = "ipa.${var.cool_domain}"
   private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
   realm                       = upper(var.cool_domain)
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
   tags                        = var.tags
@@ -77,7 +76,6 @@ module "ipa_replica1" {
   master_hostname             = "ipa.${var.cool_domain}"
   private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica1_subnet_cidr].id
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
   server_security_group_id    = module.ipa_master.server_security_group.id
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica1_subnet_cidr].id
   tags                        = var.tags
@@ -101,7 +99,6 @@ module "ipa_replica2" {
   master_hostname             = "ipa.${var.cool_domain}"
   private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica2_subnet_cidr].id
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
   server_security_group_id    = module.ipa_master.server_security_group.id
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica2_subnet_cidr].id
   tags                        = var.tags
