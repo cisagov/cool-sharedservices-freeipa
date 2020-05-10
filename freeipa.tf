@@ -54,7 +54,7 @@ module "ipa_master" {
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
   realm                       = upper(var.cool_domain)
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
-  tags                        = var.tags
+  tags                        = merge(var.tags, map("Name", "FreeIPA Master"))
   trusted_cidr_blocks         = var.trusted_cidr_blocks
 }
 
@@ -78,7 +78,7 @@ module "ipa_replica1" {
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
   server_security_group_id    = module.ipa_master.server_security_group.id
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica1_subnet_cidr].id
-  tags                        = var.tags
+  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 1"))
 }
 
 module "ipa_replica2" {
@@ -101,5 +101,5 @@ module "ipa_replica2" {
   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
   server_security_group_id    = module.ipa_master.server_security_group.id
   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica2_subnet_cidr].id
-  tags                        = var.tags
+  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 2"))
 }
