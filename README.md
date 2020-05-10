@@ -69,6 +69,11 @@ module "example" {
 | replica2 | The second IPA replica EC2 instance. |
 | server_security_group | The IPA server security group. |
 
+## Notes ##
+
+Running `pre-commit` requires running `terraform init` in every directory that
+contains Terraform code. In this repository, that is only the main directory.
+
 ## Contributing ##
 
 We welcome contributions!  Please see [here](CONTRIBUTING.md) for
