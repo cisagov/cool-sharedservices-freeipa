@@ -3,4 +3,8 @@ version: "1"
 
 lineage:
   skeleton:
+<<<<<<< HEAD
     remote-url: https://github.com/cisagov/skeleton-tf-module.git
+=======
+    remote-url: https://github.com/cisagov/skeleton-generic.git
+>>>>>>> c4921ed128dbfa2a8991ce9ae59b0d94e6b26516
