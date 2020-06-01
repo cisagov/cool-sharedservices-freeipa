@@ -1,10 +1,10 @@
 output "client_security_group" {
-  value       = module.ipa_master.client_security_group
+  value       = module.ipa0.client_security_group
   description = "The IPA client security group."
 }
 
 output "server0" {
-  value       = module.ipa_master.server
+  value       = module.ipa0.server
   description = "The first IPA server EC2 instance."
 }
 
@@ -19,6 +19,6 @@ output "server0" {
 # }
 
 output "server_security_group" {
-  value       = module.ipa_master.server_security_group
+  value       = module.ipa0.server_security_group
   description = "The IPA server security group."
 }
