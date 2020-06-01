@@ -3,9 +3,9 @@ output "client_security_group" {
   description = "The IPA client security group."
 }
 
-output "master" {
-  value       = module.ipa_master.master
-  description = "The IPA master EC2 instance."
+output "server0" {
+  value       = module.ipa_master.server
+  description = "The first IPA server EC2 instance."
 }
 
 # output "replica1" {
