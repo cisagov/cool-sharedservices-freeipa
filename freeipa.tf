@@ -33,26 +33,21 @@ locals {
   replica2_subnet_cidr = keys(data.terraform_remote_state.networking.outputs.private_subnets)[2]
 }
 
-module "ipa_master" {
+module "ipa0" {
   source = "github.com/cisagov/freeipa-master-tf-module?ref=improvement%2Fadd-ca"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
-
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  directory_service_pw        = var.directory_service_pw
-  domain                      = var.cool_domain
-  hostname                    = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  realm                       = upper(var.cool_domain)
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Master"))
-  trusted_cidr_blocks         = var.trusted_cidr_blocks
+  admin_pw             = var.admin_pw
+  ami_owner_account_id = local.images_account_id
+  directory_service_pw = var.directory_service_pw
+  domain               = var.cool_domain
+  hostname             = "ipa0.${var.cool_domain}"
+  realm                = upper(var.cool_domain)
+  reverse_zone_id      = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
+  reverse_zone_name    = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].name
+  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
+  tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
+  trusted_cidr_blocks  = var.trusted_cidr_blocks
+  zone_id              = data.terraform_remote_state.networking.outputs.private_zone.id
 }
 
 # module "ipa_replica1" {
