@@ -14,21 +14,6 @@ variable "directory_service_pw" {
   description = "The password for the IPA master's directory service."
 }
 
-variable "master_cert_pw" {
-  type        = string
-  description = "The password for the IPA master's certificate."
-}
-
-variable "replica1_cert_pw" {
-  type        = string
-  description = "The password for the first IPA replica's certificate."
-}
-
-variable "replica2_cert_pw" {
-  type        = string
-  description = "The password for the second IPA replica's certificate."
-}
-
 # ------------------------------------------------------------------------------
 # Optional parameters
 #
@@ -39,12 +24,6 @@ variable "aws_region" {
   type        = string
   description = "The AWS region where the shared services account is to be created (e.g. \"us-east-1\")."
   default     = "us-east-1"
-}
-
-variable "cert_bucket_name" {
-  type        = string
-  description = "The name of the AWS S3 bucket where certificates are stored."
-  default     = "cisa-cool-certificates"
 }
 
 variable "cool_domain" {

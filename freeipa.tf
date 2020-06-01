@@ -34,7 +34,7 @@ locals {
 }
 
 module "ipa_master" {
-  source = "github.com/cisagov/freeipa-master-tf-module"
+  source = "github.com/cisagov/freeipa-master-tf-module?ref=improvement%2Fadd-ca"
 
   providers = {
     aws            = aws
@@ -44,9 +44,6 @@ module "ipa_master" {
   admin_pw                    = var.admin_pw
   ami_owner_account_id        = local.images_account_id
   associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.master_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_master.role.arn
   directory_service_pw        = var.directory_service_pw
   domain                      = var.cool_domain
   hostname                    = "ipa.${var.cool_domain}"
@@ -58,48 +55,42 @@ module "ipa_master" {
   trusted_cidr_blocks         = var.trusted_cidr_blocks
 }
 
-module "ipa_replica1" {
-  source = "github.com/cisagov/freeipa-replica-tf-module"
+# module "ipa_replica1" {
+#   source = "github.com/cisagov/freeipa-replica-tf-module"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
+#   providers = {
+#     aws            = aws
+#     aws.public_dns = aws.public_dns
+#   }
 
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.replica1_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_replica1.role.arn
-  hostname                    = "ipa-replica1.${var.cool_domain}"
-  master_hostname             = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica1_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  server_security_group_id    = module.ipa_master.server_security_group.id
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica1_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 1"))
-}
+#   admin_pw                    = var.admin_pw
+#   ami_owner_account_id        = local.images_account_id
+#   associate_public_ip_address = false
+#   hostname                    = "ipa-replica1.${var.cool_domain}"
+#   master_hostname             = "ipa.${var.cool_domain}"
+#   private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica1_subnet_cidr].id
+#   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
+#   server_security_group_id    = module.ipa_master.server_security_group.id
+#   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica1_subnet_cidr].id
+#   tags                        = merge(var.tags, map("Name", "FreeIPA Replica 1"))
+# }
 
-module "ipa_replica2" {
-  source = "github.com/cisagov/freeipa-replica-tf-module"
+# module "ipa_replica2" {
+#   source = "github.com/cisagov/freeipa-replica-tf-module"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
+#   providers = {
+#     aws            = aws
+#     aws.public_dns = aws.public_dns
+#   }
 
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.replica2_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_replica2.role.arn
-  hostname                    = "ipa-replica2.${var.cool_domain}"
-  master_hostname             = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica2_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  server_security_group_id    = module.ipa_master.server_security_group.id
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica2_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 2"))
-}
+#   admin_pw                    = var.admin_pw
+#   ami_owner_account_id        = local.images_account_id
+#   associate_public_ip_address = false
+#   hostname                    = "ipa-replica2.${var.cool_domain}"
+#   master_hostname             = "ipa.${var.cool_domain}"
+#   private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica2_subnet_cidr].id
+#   private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
+#   server_security_group_id    = module.ipa_master.server_security_group.id
+#   subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica2_subnet_cidr].id
+#   tags                        = merge(var.tags, map("Name", "FreeIPA Replica 2"))
+# }
