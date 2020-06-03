@@ -1,20 +1,4 @@
 # ------------------------------------------------------------------------------
-# Required parameters
-#
-# You must provide a value for each of these parameters.
-# ------------------------------------------------------------------------------
-
-variable "admin_pw" {
-  type        = string
-  description = "The password for the Kerberos admin role."
-}
-
-variable "directory_service_pw" {
-  type        = string
-  description = "The password for the IPA master's directory service."
-}
-
-# ------------------------------------------------------------------------------
 # Optional parameters
 #
 # These parameters have reasonable defaults.
@@ -48,12 +32,6 @@ variable "provisionfreeipa_policy_name" {
   type        = string
   description = "The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
   default     = "ProvisionFreeIPA"
-}
-
-variable "public_zone_name" {
-  type        = string
-  description = "The name of the public Route53 zone where public DNS records should be created (e.g. \"cyber.dhs.gov.\")."
-  default     = "cyber.dhs.gov."
 }
 
 variable "tags" {
