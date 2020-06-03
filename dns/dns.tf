@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
-# Create A and PTR records for the IPA server
-#-------------------------------------------------------------------------------
+# Create all necessary DNS records for the master IPA server.
+# -------------------------------------------------------------------------------
 resource "aws_route53_record" "server_A" {
   zone_id = var.zone_id
   name    = var.hostname
