@@ -40,11 +40,20 @@ module "ipa0" {
   domain               = var.cool_domain
   hostname             = "ipa0.${var.cool_domain}"
   realm                = upper(var.cool_domain)
-  reverse_zone_id      = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
   subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
   tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
   trusted_cidr_blocks  = var.trusted_cidr_blocks
-  zone_id              = data.terraform_remote_state.networking.outputs.private_zone.id
+}
+
+module "dns" {
+  source = "./dns"
+
+  domain          = var.cool_domain
+  hostname        = "ipa0.${var.cool_domain}"
+  ip              = module.ipa0.server.private_ip
+  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
+  tags            = var.tags
+  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
 
 # module "ipa_replica1" {
