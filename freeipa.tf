@@ -34,7 +34,7 @@ locals {
 }
 
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-master-tf-module?ref=improvement%2Fadd-ca"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-ca"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
