@@ -45,3 +45,9 @@ variable "trusted_cidr_blocks" {
   description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
 }
+
+variable "ttl" {
+  type        = number
+  description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
+  default     = 86400
+}
