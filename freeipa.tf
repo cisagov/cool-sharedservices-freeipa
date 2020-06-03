@@ -76,64 +76,33 @@ module "ipa2" {
 }
 
 # Create the DNS entries for the IPA cluster
-module "dns" {
-  source = "./dns"
+module "master_dns" {
+  source = "./master_dns"
 
   domain          = var.cool_domain
   hostname        = "ipa0.${var.cool_domain}"
   ip              = module.ipa0.server.private_ip
   reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-  tags            = var.tags
   ttl             = var.ttl
   zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
+module "replica1_dns" {
+  source = "./replica_dns"
 
-resource "aws_route53_record" "server1_A" {
-  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
-  name    = "ipa1.${var.cool_domain}"
-  type    = "A"
-  ttl     = var.ttl
-  records = [
-    module.ipa1.server.private_ip,
-  ]
+  domain          = var.cool_domain
+  hostname        = "ipa1.${var.cool_domain}"
+  ip              = module.ipa1.server.private_ip
+  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
+  ttl             = var.ttl
+  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
-resource "aws_route53_record" "server1_PTR" {
-  zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
-  name = format(
-    "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", module.ipa1.server.private_ip), 3),
-    element(split(".", module.ipa1.server.private_ip), 2),
-    element(split(".", module.ipa1.server.private_ip), 1),
-    element(split(".", module.ipa1.server.private_ip), 0),
-  )
-  type = "PTR"
-  ttl  = var.ttl
-  records = [
-    "ipa1.${var.cool_domain}"
-  ]
-}
+module "replica2_dns" {
+  source = "./replica_dns"
 
-resource "aws_route53_record" "server2_A" {
-  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
-  name    = "ipa2.${var.cool_domain}"
-  type    = "A"
-  ttl     = var.ttl
-  records = [
-    module.ipa2.server.private_ip,
-  ]
-}
-resource "aws_route53_record" "server2_PTR" {
-  zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
-  name = format(
-    "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", module.ipa2.server.private_ip), 3),
-    element(split(".", module.ipa2.server.private_ip), 2),
-    element(split(".", module.ipa2.server.private_ip), 1),
-    element(split(".", module.ipa2.server.private_ip), 0),
-  )
-  type = "PTR"
-  ttl  = var.ttl
-  records = [
-    "ipa2.${var.cool_domain}"
-  ]
+  domain          = var.cool_domain
+  hostname        = "ipa2.${var.cool_domain}"
+  ip              = module.ipa2.server.private_ip
+  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
+  ttl             = var.ttl
+  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
