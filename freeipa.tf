@@ -36,9 +36,7 @@ locals {
 module "ipa0" {
   source = "github.com/cisagov/freeipa-master-tf-module?ref=improvement%2Fadd-ca"
 
-  admin_pw             = var.admin_pw
   ami_owner_account_id = local.images_account_id
-  directory_service_pw = var.directory_service_pw
   domain               = var.cool_domain
   hostname             = "ipa0.${var.cool_domain}"
   realm                = upper(var.cool_domain)
