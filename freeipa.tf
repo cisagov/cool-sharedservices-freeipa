@@ -27,12 +27,20 @@ locals {
     if account.name == "Images (${local.this_account_type})"
   ][0]
 
-  # The subnets where the master and two replicas are to be placed
-  master_subnet_cidr   = keys(data.terraform_remote_state.networking.outputs.private_subnets)[0]
-  replica1_subnet_cidr = keys(data.terraform_remote_state.networking.outputs.private_subnets)[1]
-  replica2_subnet_cidr = keys(data.terraform_remote_state.networking.outputs.private_subnets)[2]
+  # The subnets where the IPA servers are to be placed
+  subnet_cidrs = keys(data.terraform_remote_state.networking.outputs.private_subnets)
 }
 
+# Create the IPA client and server security groups
+module "security_groups" {
+  source = "./security_groups"
+
+  tags                = var.tags
+  trusted_cidr_blocks = var.trusted_cidr_blocks
+  vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
+}
+
+# Create the IPA servers
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-ca"
 
@@ -40,18 +48,19 @@ module "ipa0" {
   domain               = var.cool_domain
   hostname             = "ipa0.${var.cool_domain}"
   realm                = upper(var.cool_domain)
-  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
+  security_group_ids   = [module.security_groups.server.id]
+  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
   tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
-  trusted_cidr_blocks  = var.trusted_cidr_blocks
 }
 
+# Create the DNS entries for the IPA cluster
 module "dns" {
   source = "./dns"
 
   domain          = var.cool_domain
   hostname        = "ipa0.${var.cool_domain}"
   ip              = module.ipa0.server.private_ip
-  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
+  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
   tags            = var.tags
   zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }

@@ -1,5 +1,5 @@
 output "client_security_group" {
-  value       = module.ipa0.client_security_group
+  value       = module.security_groups.client
   description = "The IPA client security group."
 }
 
@@ -19,6 +19,6 @@ output "server0" {
 # }
 
 output "server_security_group" {
-  value       = module.ipa0.server_security_group
+  value       = module.security_groups.server
   description = "The IPA server security group."
 }
