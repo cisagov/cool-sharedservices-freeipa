@@ -76,33 +76,16 @@ module "ipa2" {
 }
 
 # Create the DNS entries for the IPA cluster
-module "master_dns" {
-  source = "./master_dns"
+module "dns" {
+  source = "./dns"
 
-  domain          = var.cool_domain
-  hostname        = "ipa0.${var.cool_domain}"
-  ip              = module.ipa0.server.private_ip
+  domain = var.cool_domain
+  hostname_ip_map = {
+    "ipa0.${var.cool_domain}" = module.ipa0.server.private_ip
+    "ipa1.${var.cool_domain}" = module.ipa1.server.private_ip
+    "ipa2.${var.cool_domain}" = module.ipa2.server.private_ip
+  }
   reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-  ttl             = var.ttl
-  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
-}
-module "replica1_dns" {
-  source = "./replica_dns"
-
-  domain          = var.cool_domain
-  hostname        = "ipa1.${var.cool_domain}"
-  ip              = module.ipa1.server.private_ip
-  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
-  ttl             = var.ttl
-  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
-}
-module "replica2_dns" {
-  source = "./replica_dns"
-
-  domain          = var.cool_domain
-  hostname        = "ipa2.${var.cool_domain}"
-  ip              = module.ipa2.server.private_ip
-  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
   ttl             = var.ttl
   zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
