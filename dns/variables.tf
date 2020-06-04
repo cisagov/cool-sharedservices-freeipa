@@ -4,19 +4,14 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
-variable "hostname" {
-  type        = string
-  description = "The hostname of the IPA master (e.g. ipa.example.com)."
-}
-
 variable "domain" {
   type        = string
   description = "The domain for the IPA master (e.g. example.com)."
 }
 
-variable "ip" {
-  type        = string
-  description = "The IP of the IPA master (e.g. 10.11.1.5)."
+variable "hostname_ip_map" {
+  type        = map(string)
+  description = "A map whose keys are the hostnames of the IPA servers and whose values are the IPs corresponding to  those servers (e.g. {\"ipa0.example.com\" = \"10.0.0.1\", \"ipa1.example.com\" = \"10.0.0.2\"})."
 }
 
 variable "reverse_zone_id" {
