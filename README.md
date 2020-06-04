@@ -59,6 +59,8 @@ module "example" {
 |------|-------------|
 | client_security_group | The IPA client security group. |
 | server0 | The first IPA server EC2 instance. |
+| server1 | The second IPA server EC2 instance. |
+| server2 | The third IPA server EC2 instance. |
 | server_security_group | The IPA server security group. |
 
 ## Notes ##
