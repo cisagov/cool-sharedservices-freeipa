@@ -42,7 +42,7 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-ca"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -53,7 +53,7 @@ module "ipa0" {
   tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
 }
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-ca"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -64,7 +64,7 @@ module "ipa1" {
   tags                 = merge(var.tags, map("Name", "FreeIPA 1"))
 }
 module "ipa2" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-ca"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
