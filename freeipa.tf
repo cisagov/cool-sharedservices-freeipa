@@ -80,12 +80,20 @@ module "dns" {
   source = "./dns"
 
   domain = var.cool_domain
-  hostname_ip_map = {
-    "ipa0.${var.cool_domain}" = module.ipa0.server.private_ip
-    "ipa1.${var.cool_domain}" = module.ipa1.server.private_ip
-    "ipa2.${var.cool_domain}" = module.ipa2.server.private_ip
+  hosts = {
+    "ipa0.${var.cool_domain}" = {
+      ip              = module.ipa0.server.private_ip
+      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
+    }
+    "ipa1.${var.cool_domain}" = {
+      ip              = module.ipa1.server.private_ip
+      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
+    }
+    "ipa2.${var.cool_domain}" = {
+      ip              = module.ipa2.server.private_ip
+      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
+    }
   }
-  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-  ttl             = var.ttl
-  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
+  ttl     = var.ttl
+  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
 }
