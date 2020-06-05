@@ -1,35 +1,4 @@
 # ------------------------------------------------------------------------------
-# Required parameters
-#
-# You must provide a value for each of these parameters.
-# ------------------------------------------------------------------------------
-
-variable "admin_pw" {
-  type        = string
-  description = "The password for the Kerberos admin role."
-}
-
-variable "directory_service_pw" {
-  type        = string
-  description = "The password for the IPA master's directory service."
-}
-
-variable "master_cert_pw" {
-  type        = string
-  description = "The password for the IPA master's certificate."
-}
-
-variable "replica1_cert_pw" {
-  type        = string
-  description = "The password for the first IPA replica's certificate."
-}
-
-variable "replica2_cert_pw" {
-  type        = string
-  description = "The password for the second IPA replica's certificate."
-}
-
-# ------------------------------------------------------------------------------
 # Optional parameters
 #
 # These parameters have reasonable defaults.
@@ -39,12 +8,6 @@ variable "aws_region" {
   type        = string
   description = "The AWS region where the shared services account is to be created (e.g. \"us-east-1\")."
   default     = "us-east-1"
-}
-
-variable "cert_bucket_name" {
-  type        = string
-  description = "The name of the AWS S3 bucket where certificates are stored."
-  default     = "cisa-cool-certificates"
 }
 
 variable "cool_domain" {
@@ -71,12 +34,6 @@ variable "provisionfreeipa_policy_name" {
   default     = "ProvisionFreeIPA"
 }
 
-variable "public_zone_name" {
-  type        = string
-  description = "The name of the public Route53 zone where public DNS records should be created (e.g. \"cyber.dhs.gov.\")."
-  default     = "cyber.dhs.gov."
-}
-
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created."
@@ -87,4 +44,10 @@ variable "trusted_cidr_blocks" {
   type        = list(string)
   description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
+}
+
+variable "ttl" {
+  type        = number
+  description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
+  default     = 86400
 }

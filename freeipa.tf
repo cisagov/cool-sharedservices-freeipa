@@ -27,79 +27,65 @@ locals {
     if account.name == "Images (${local.this_account_type})"
   ][0]
 
-  # The subnets where the master and two replicas are to be placed
-  master_subnet_cidr   = keys(data.terraform_remote_state.networking.outputs.private_subnets)[0]
-  replica1_subnet_cidr = keys(data.terraform_remote_state.networking.outputs.private_subnets)[1]
-  replica2_subnet_cidr = keys(data.terraform_remote_state.networking.outputs.private_subnets)[2]
+  # The subnets where the IPA servers are to be placed
+  subnet_cidrs = keys(data.terraform_remote_state.networking.outputs.private_subnets)
 }
 
-module "ipa_master" {
-  source = "github.com/cisagov/freeipa-master-tf-module"
+# Create the IPA client and server security groups
+module "security_groups" {
+  source = "./security_groups"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
-
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.master_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_master.role.arn
-  directory_service_pw        = var.directory_service_pw
-  domain                      = var.cool_domain
-  hostname                    = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.master_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  realm                       = upper(var.cool_domain)
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.master_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Master"))
-  trusted_cidr_blocks         = var.trusted_cidr_blocks
+  tags                = var.tags
+  trusted_cidr_blocks = var.trusted_cidr_blocks
+  vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
 }
 
-module "ipa_replica1" {
-  source = "github.com/cisagov/freeipa-replica-tf-module"
+# Create the IPA servers
+module "ipa0" {
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
+  ami_owner_account_id = local.images_account_id
+  domain               = var.cool_domain
+  hostname             = "ipa0.${var.cool_domain}"
+  realm                = upper(var.cool_domain)
+  security_group_ids   = [module.security_groups.server.id]
+  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
+  tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
+}
+module "ipa1" {
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.replica1_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_replica1.role.arn
-  hostname                    = "ipa-replica1.${var.cool_domain}"
-  master_hostname             = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica1_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  server_security_group_id    = module.ipa_master.server_security_group.id
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica1_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 1"))
+  ami_owner_account_id = local.images_account_id
+  domain               = var.cool_domain
+  hostname             = "ipa1.${var.cool_domain}"
+  realm                = upper(var.cool_domain)
+  security_group_ids   = [module.security_groups.server.id]
+  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
+  tags                 = merge(var.tags, map("Name", "FreeIPA 1"))
+}
+module "ipa2" {
+  source = "github.com/cisagov/freeipa-server-tf-module"
+
+  ami_owner_account_id = local.images_account_id
+  domain               = var.cool_domain
+  hostname             = "ipa2.${var.cool_domain}"
+  realm                = upper(var.cool_domain)
+  security_group_ids   = [module.security_groups.server.id]
+  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
+  tags                 = merge(var.tags, map("Name", "FreeIPA 2"))
 }
 
-module "ipa_replica2" {
-  source = "github.com/cisagov/freeipa-replica-tf-module"
+# Create the DNS entries for the IPA cluster
+module "dns" {
+  source = "./dns"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
+  domain = var.cool_domain
+  hostname_ip_map = {
+    "ipa0.${var.cool_domain}" = module.ipa0.server.private_ip
+    "ipa1.${var.cool_domain}" = module.ipa1.server.private_ip
+    "ipa2.${var.cool_domain}" = module.ipa2.server.private_ip
   }
-
-  admin_pw                    = var.admin_pw
-  ami_owner_account_id        = local.images_account_id
-  associate_public_ip_address = false
-  cert_bucket_name            = var.cert_bucket_name
-  cert_pw                     = var.replica2_cert_pw
-  cert_read_role_arn          = module.certreadrole_ipa_replica2.role.arn
-  hostname                    = "ipa-replica2.${var.cool_domain}"
-  master_hostname             = "ipa.${var.cool_domain}"
-  private_reverse_zone_id     = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.replica2_subnet_cidr].id
-  private_zone_id             = data.terraform_remote_state.networking.outputs.private_zone.id
-  server_security_group_id    = module.ipa_master.server_security_group.id
-  subnet_id                   = data.terraform_remote_state.networking.outputs.private_subnets[local.replica2_subnet_cidr].id
-  tags                        = merge(var.tags, map("Name", "FreeIPA Replica 2"))
+  reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
+  ttl             = var.ttl
+  zone_id         = data.terraform_remote_state.networking.outputs.private_zone.id
 }
