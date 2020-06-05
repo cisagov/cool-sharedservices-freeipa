@@ -38,8 +38,7 @@ module "example" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | domain | The domain for the IPA master (e.g. example.com). | `string` | n/a | yes |
-| hostname_ip_map | A map whose keys are the hostnames of the IPA servers and whose values are the IPs corresponding to  those servers (e.g. {"ipa0.example.com" = "10.0.0.1", "ipa1.example.com" = "10.0.0.2"}). | `map(string)` | n/a | yes |
-| reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. ZKX36JXQ8W82L). | `string` | n/a | yes |
+| hosts | A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname (e.g. {"ipa0.example.com" = {"ip" = "10.0.0.1", "reverse_zone_id" = "ZKX36JXQ8W82L"}, "ipa1.example.com" = {"ip" = "10.0.0.2", "reverse_zone_id" = "ZKX36JXQ8W93M"}). | `map(object({ip=string, reverse_zone_id=string}))` | n/a | yes |
 | ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `86400` | no |
 | zone_id | The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W93M). | `string` | n/a | yes |
 
