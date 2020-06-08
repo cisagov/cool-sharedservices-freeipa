@@ -9,14 +9,9 @@ variable "domain" {
   description = "The domain for the IPA master (e.g. example.com)."
 }
 
-variable "hostname_ip_map" {
-  type        = map(string)
-  description = "A map whose keys are the hostnames of the IPA servers and whose values are the IPs corresponding to  those servers (e.g. {\"ipa0.example.com\" = \"10.0.0.1\", \"ipa1.example.com\" = \"10.0.0.2\"})."
-}
-
-variable "reverse_zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. ZKX36JXQ8W82L)."
+variable "hosts" {
+  type        = map(object({ ip = string, reverse_zone_id = string }))
+  description = "A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname (e.g. {\"ipa0.example.com\" = {\"ip\" = \"10.0.0.1\", \"reverse_zone_id\" = \"ZKX36JXQ8W82L\"}, \"ipa1.example.com\" = {\"ip\" = \"10.0.0.2\", \"reverse_zone_id\" = \"ZKX36JXQ8W93M\"})."
 }
 
 variable "zone_id" {

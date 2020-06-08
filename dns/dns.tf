@@ -1,28 +1,28 @@
 #-------------------------------------------------------------------------------
-# Create all necessary DNS records for the master IPA server.
+# Create all necessary DNS records for the IPA servers.
 # -------------------------------------------------------------------------------
 resource "aws_route53_record" "server_A" {
-  for_each = var.hostname_ip_map
+  for_each = var.hosts
 
   zone_id = var.zone_id
   name    = each.key
   type    = "A"
   ttl     = var.ttl
   records = [
-    each.value,
+    each.value["ip"],
   ]
 }
 
 resource "aws_route53_record" "server_PTR" {
-  for_each = var.hostname_ip_map
+  for_each = var.hosts
 
-  zone_id = var.reverse_zone_id
+  zone_id = each.value["reverse_zone_id"]
   name = format(
     "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", each.value), 3),
-    element(split(".", each.value), 2),
-    element(split(".", each.value), 1),
-    element(split(".", each.value), 0),
+    element(split(".", each.value["ip"]), 3),
+    element(split(".", each.value["ip"]), 2),
+    element(split(".", each.value["ip"]), 1),
+    element(split(".", each.value["ip"]), 0),
   )
   type = "PTR"
   ttl  = var.ttl
@@ -36,7 +36,10 @@ resource "aws_route53_record" "ca_A" {
   name    = "ipa-ca.${var.domain}"
   type    = "A"
   ttl     = var.ttl
-  records = values(var.hostname_ip_map)
+  records = [
+    for hostname, m in var.hosts :
+    m["ip"]
+  ]
 }
 
 resource "aws_route53_record" "kerberos_TXT" {
@@ -57,7 +60,7 @@ resource "aws_route53_record" "master_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    for hostname, ip in var.hostname_ip_map :
+    for hostname, m in var.hosts :
     "0 100 88 ${hostname}"
   ]
 }
@@ -70,7 +73,7 @@ resource "aws_route53_record" "server_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    for hostname, ip in var.hostname_ip_map :
+    for hostname, m in var.hosts :
     "0 100 88 ${hostname}"
   ]
 }
@@ -83,7 +86,7 @@ resource "aws_route53_record" "password_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    for hostname, ip in var.hostname_ip_map :
+    for hostname, m in var.hosts :
     "0 100 464 ${hostname}"
   ]
 }
@@ -94,7 +97,7 @@ resource "aws_route53_record" "ldap_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    for hostname, ip in var.hostname_ip_map :
+    for hostname, m in var.hosts :
     "0 100 389 ${hostname}"
   ]
 }
@@ -105,7 +108,7 @@ resource "aws_route53_record" "ldaps_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    for hostname, ip in var.hostname_ip_map :
+    for hostname, m in var.hosts :
     "0 100 636 ${hostname}"
   ]
 }
