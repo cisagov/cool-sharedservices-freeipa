@@ -39,6 +39,7 @@ resource "aws_route53_record" "ca_A" {
   records = [
     for hostname, m in var.hosts :
     m["ip"]
+    if m["advertise"]
   ]
 }
 
@@ -62,6 +63,7 @@ resource "aws_route53_record" "master_SRV" {
   records = [
     for hostname, m in var.hosts :
     "0 100 88 ${hostname}"
+    if m["advertise"]
   ]
 }
 
@@ -75,6 +77,7 @@ resource "aws_route53_record" "server_SRV" {
   records = [
     for hostname, m in var.hosts :
     "0 100 88 ${hostname}"
+    if m["advertise"]
   ]
 }
 
@@ -88,6 +91,7 @@ resource "aws_route53_record" "password_SRV" {
   records = [
     for hostname, m in var.hosts :
     "0 100 464 ${hostname}"
+    if m["advertise"]
   ]
 }
 
@@ -99,6 +103,7 @@ resource "aws_route53_record" "ldap_SRV" {
   records = [
     for hostname, m in var.hosts :
     "0 100 389 ${hostname}"
+    if m["advertise"]
   ]
 }
 
@@ -110,5 +115,6 @@ resource "aws_route53_record" "ldaps_SRV" {
   records = [
     for hostname, m in var.hosts :
     "0 100 636 ${hostname}"
+    if m["advertise"]
   ]
 }
