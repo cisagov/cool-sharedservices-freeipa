@@ -95,17 +95,17 @@ module "dns" {
     "ipa0.${var.cool_domain}" = {
       ip              = local.ipa_ips[0]
       reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-      advertise       = true
+      advertise       = var.advertise_ipa_servers["ipa0"]
     }
     "ipa1.${var.cool_domain}" = {
       ip              = local.ipa_ips[1]
       reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
-      advertise       = true
+      advertise       = var.advertise_ipa_servers["ipa1"]
     }
     "ipa2.${var.cool_domain}" = {
       ip              = local.ipa_ips[2]
       reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
-      advertise       = true
+      advertise       = var.advertise_ipa_servers["ipa2"]
     }
   }
   ttl     = var.ttl
