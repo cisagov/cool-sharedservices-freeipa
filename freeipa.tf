@@ -33,11 +33,11 @@ locals {
   # The IP addresses of the IPA servers.  AWS reserves the first four
   # and the last IP address in each subnet.
   #
-  # The latest version of cisagov/freeipa-server-tf-module requires us
-  # to assign IPs in order to break the dependency of DNS record
-  # resources on the corresponding EC2 instance resources; otherwise,
-  # it is not possible to recreate the IPA servers one by one as is
-  # required when a new FreeIPA AMI is made available.
+  # cisagov/freeipa-server-tf-module now requires us to assign IPs in
+  # order to break the dependency of DNS record resources on the
+  # corresponding EC2 instance resources; otherwise, it is not
+  # possible to recreate the IPA servers one by one as is required
+  # when a new FreeIPA AMI is made available.
   ipa_ips = [for cidr in local.subnet_cidrs : cidrhost(cidr, 4)]
 }
 
