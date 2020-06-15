@@ -4,6 +4,16 @@
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
 
+variable "advertise_ipa_servers" {
+  type        = map(bool)
+  description = "A map whose keys are the leading part of the IPA servers' hostnames and whose keys are boolean values denoting whether that particular server should be advertised as an IPA server (e.g. {\"ipa0\" = true, \"ipa1\" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc."
+  default = {
+    "ipa0" = true
+    "ipa1" = true
+    "ipa2" = true
+  }
+}
+
 variable "aws_region" {
   type        = string
   description = "The AWS region where the shared services account is to be created (e.g. \"us-east-1\")."

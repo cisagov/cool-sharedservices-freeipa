@@ -10,8 +10,8 @@ variable "domain" {
 }
 
 variable "hosts" {
-  type        = map(object({ ip = string, reverse_zone_id = string }))
-  description = "A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname (e.g. {\"ipa0.example.com\" = {\"ip\" = \"10.0.0.1\", \"reverse_zone_id\" = \"ZKX36JXQ8W82L\"}, \"ipa1.example.com\" = {\"ip\" = \"10.0.0.2\", \"reverse_zone_id\" = \"ZKX36JXQ8W93M\"})."
+  type        = map(object({ ip = string, reverse_zone_id = string, advertise = bool }))
+  description = "A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname, as well as a boolean value indicating whether the host should be advertised as an IPA server (e.g. {\"ipa0.example.com\" = {\"ip\" = \"10.0.0.1\", \"reverse_zone_id\" = \"ZKX36JXQ8W82L\", \"advertise\" = true}, \"ipa1.example.com\" = {\"ip\" = \"10.0.0.2\", \"reverse_zone_id\" = \"ZKX36JXQ8W93M\", \"advertise\" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc."
 }
 
 variable "zone_id" {
