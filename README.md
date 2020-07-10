@@ -7,6 +7,16 @@ the COOL shared services environment.  This deployment should be laid
 down on top of
 [cisagov/cool-sharedservices-networking](https://github.com/cisagov/cool-sharedservices-networking).
 
+## Pre-requisites ##
+
+- [Terraform](https://www.terraform.io/) installed on your system.
+- An accessible AWS S3 bucket to store Terraform state
+  (specified [here](backend.tf)).
+- An accessible AWS DynamoDB database to store the Terraform state lock
+  (specified [here](backend.tf)).
+- Access to all of the Terraform remote states specified in
+  [the remote states file](remote_states.tf).
+
 ## Usage ##
 
 ```hcl
@@ -38,6 +48,8 @@ module "example" {
 |------|---------|
 | aws | n/a |
 | aws.organizationsreadonly | n/a |
+| aws.public_dns | n/a |
+| aws.sharedservicesprovisionaccount | n/a |
 | terraform | n/a |
 
 ## Inputs ##
