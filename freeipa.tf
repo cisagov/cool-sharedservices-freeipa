@@ -20,6 +20,9 @@ locals {
 # Create the IPA client and server security groups
 module "security_groups" {
   source = "./security_groups"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   tags                = var.tags
   trusted_cidr_blocks = var.trusted_cidr_blocks
@@ -29,6 +32,9 @@ module "security_groups" {
 # Create the IPA servers
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -41,6 +47,9 @@ module "ipa0" {
 }
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -52,6 +61,9 @@ module "ipa1" {
 }
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -65,6 +77,9 @@ module "ipa2" {
 # Create the DNS entries for the IPA cluster
 module "dns" {
   source = "./dns"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   domain = var.cool_domain
   hosts = {
