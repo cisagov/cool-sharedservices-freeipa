@@ -3,30 +3,6 @@
 #-------------------------------------------------------------------------------
 
 locals {
-  # Get Shared Services account ID from the default provider
-  this_account_id = data.aws_caller_identity.sharedservices.account_id
-
-  # Look up Shared Services account name from AWS organizations
-  # provider
-  this_account_name = [
-    for account in data.aws_organizations_organization.cool.accounts :
-    account.name
-    if account.id == local.this_account_id
-  ][0]
-
-  # Determine Shared Services account type based on account name.
-  #
-  # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
-  # example, "Shared Services (Production)".
-  this_account_type = length(regexall("\\(([^()]*)\\)", local.this_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.this_account_name)[0] : "Unknown"
-
-  # Determine the ID of the corresponding Images account
-  images_account_id = [
-    for account in data.aws_organizations_organization.cool.accounts :
-    account.id
-    if account.name == "Images (${local.this_account_type})"
-  ][0]
-
   # The subnets where the IPA servers are to be placed
   subnet_cidrs = keys(data.terraform_remote_state.networking.outputs.private_subnets)
 
@@ -44,6 +20,9 @@ locals {
 # Create the IPA client and server security groups
 module "security_groups" {
   source = "./security_groups"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   tags                = var.tags
   trusted_cidr_blocks = var.trusted_cidr_blocks
@@ -53,6 +32,9 @@ module "security_groups" {
 # Create the IPA servers
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -65,6 +47,9 @@ module "ipa0" {
 }
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -76,6 +61,9 @@ module "ipa1" {
 }
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -89,6 +77,9 @@ module "ipa2" {
 # Create the DNS entries for the IPA cluster
 module "dns" {
   source = "./dns"
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
 
   domain = var.cool_domain
   hosts = {

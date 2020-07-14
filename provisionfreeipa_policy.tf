@@ -17,6 +17,8 @@ data "aws_iam_policy_document" "provisionfreeipa_policy_doc" {
 }
 
 resource "aws_iam_policy" "provisionfreeipa_policy" {
+  provider = aws.sharedservicesprovisionaccount
+
   description = var.provisionfreeipa_policy_description
   name        = var.provisionfreeipa_policy_name
   policy      = data.aws_iam_policy_document.provisionfreeipa_policy_doc.json
