@@ -40,16 +40,16 @@ module "example" {
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12 |
+| terraform | ~> 0.12.0 |
+| aws | ~> 2.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
-| aws.organizationsreadonly | n/a |
-| aws.public_dns | n/a |
-| aws.sharedservicesprovisionaccount | n/a |
+| aws | ~> 2.0 |
+| aws.organizationsreadonly | ~> 2.0 |
+| aws.sharedservicesprovisionaccount | ~> 2.0 |
 | terraform | n/a |
 
 ## Inputs ##
