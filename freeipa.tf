@@ -41,9 +41,12 @@ module "ipa0" {
   hostname             = "ipa0.${var.cool_domain}"
   ip                   = local.ipa_ips[0]
   realm                = upper(var.cool_domain)
-  security_group_ids   = [module.security_groups.server.id]
-  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
-  tags                 = merge(var.tags, map("Name", "FreeIPA 0"))
+  security_group_ids = [
+    module.security_groups.server.id,
+    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+  ]
+  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
+  tags      = merge(var.tags, map("Name", "FreeIPA 0"))
 }
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
@@ -55,9 +58,12 @@ module "ipa1" {
   domain               = var.cool_domain
   hostname             = "ipa1.${var.cool_domain}"
   ip                   = local.ipa_ips[1]
-  security_group_ids   = [module.security_groups.server.id]
-  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
-  tags                 = merge(var.tags, map("Name", "FreeIPA 1"))
+  security_group_ids = [
+    module.security_groups.server.id,
+    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+  ]
+  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
+  tags      = merge(var.tags, map("Name", "FreeIPA 1"))
 }
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
@@ -69,9 +75,12 @@ module "ipa2" {
   domain               = var.cool_domain
   hostname             = "ipa2.${var.cool_domain}"
   ip                   = local.ipa_ips[2]
-  security_group_ids   = [module.security_groups.server.id]
-  subnet_id            = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
-  tags                 = merge(var.tags, map("Name", "FreeIPA 2"))
+  security_group_ids = [
+    module.security_groups.server.id,
+    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+  ]
+  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
+  tags      = merge(var.tags, map("Name", "FreeIPA 2"))
 }
 
 # Create the DNS entries for the IPA cluster
