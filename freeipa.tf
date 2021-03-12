@@ -43,7 +43,7 @@ module "ipa0" {
   realm                = upper(var.cool_domain)
   security_group_ids = [
     module.security_groups.server.id,
-    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
   tags      = merge(var.tags, map("Name", "FreeIPA 0"))
@@ -60,7 +60,7 @@ module "ipa1" {
   ip                   = local.ipa_ips[1]
   security_group_ids = [
     module.security_groups.server.id,
-    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
   tags      = merge(var.tags, map("Name", "FreeIPA 1"))
@@ -77,7 +77,7 @@ module "ipa2" {
   ip                   = local.ipa_ips[2]
   security_group_ids = [
     module.security_groups.server.id,
-    data.terraform_remote_state.venom.outputs.venom_security_group.id,
+    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
   tags      = merge(var.tags, map("Name", "FreeIPA 2"))
