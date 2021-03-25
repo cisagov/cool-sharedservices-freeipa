@@ -31,9 +31,10 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
@@ -49,9 +50,10 @@ module "ipa0" {
   tags      = merge(var.tags, map("Name", "FreeIPA 0"))
 }
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
@@ -66,9 +68,10 @@ module "ipa1" {
   tags      = merge(var.tags, map("Name", "FreeIPA 1"))
 }
 module "ipa2" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
