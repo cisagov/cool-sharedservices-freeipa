@@ -41,6 +41,9 @@ module "ipa0" {
   domain               = var.cool_domain
   hostname             = "ipa0.${var.cool_domain}"
   ip                   = local.ipa_ips[0]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   realm                = upper(var.cool_domain)
   security_group_ids = [
     module.security_groups.server.id,
@@ -60,6 +63,9 @@ module "ipa1" {
   domain               = var.cool_domain
   hostname             = "ipa1.${var.cool_domain}"
   ip                   = local.ipa_ips[1]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
@@ -78,6 +84,9 @@ module "ipa2" {
   domain               = var.cool_domain
   hostname             = "ipa2.${var.cool_domain}"
   ip                   = local.ipa_ips[2]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
