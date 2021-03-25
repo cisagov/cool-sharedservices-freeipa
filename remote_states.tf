@@ -4,7 +4,7 @@
 # or more Terraform configurations as input data for this
 # configuration.
 # ------------------------------------------------------------------------------
-data "terraform_remote_state" "dns_cyber_dhs_gov" {
+data "terraform_remote_state" "images_parameterstore" {
   backend = "s3"
 
   config = {
@@ -13,10 +13,10 @@ data "terraform_remote_state" "dns_cyber_dhs_gov" {
     dynamodb_table = "terraform-state-lock"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-dns-cyber.dhs.gov.tfstate"
+    key            = "cool-images-parameterstore/terraform.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "master" {

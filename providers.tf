@@ -16,14 +16,13 @@ provider "aws" {
   }
 }
 
-# This provider isn't used, since we choose not associate public IPs
-# with the FreeIPA master and replicas.  We do, however, have to
-# provide a valid provider to the Terraform module.
+# The provider used to create IAM roles that can read selected
+# SSM ParameterStore parameters in the Images account.
 provider "aws" {
-  alias  = "public_dns"
+  alias  = "provision_ssm_parameter_read_role"
   region = var.aws_region
   assume_role {
-    role_arn     = data.terraform_remote_state.dns_cyber_dhs_gov.outputs.route53resourcechange_role.arn
+    role_arn     = data.terraform_remote_state.images_parameterstore.outputs.provisionparameterstorereadroles_role.arn
     session_name = local.caller_user_name
   }
 }
