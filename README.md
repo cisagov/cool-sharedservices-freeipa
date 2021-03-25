@@ -23,13 +23,13 @@ down on top of
 module "example" {
   source = "github.com/cisagov/cool-sharedservices-freeipa"
 
-  aws_region                       = "us-east-1"
-  cool_domain                      = "example.com"
-  tags                             = {
+  aws_region          = "us-east-1"
+  cool_domain         = "example.com"
+  tags                = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
-  trusted_cidr_blocks              = [
+  trusted_cidr_blocks = [
     "10.99.49.0/24",
     "10.99.52.0/24"
   ]
@@ -52,29 +52,55 @@ module "example" {
 | aws.sharedservicesprovisionaccount | ~> 3.0 |
 | terraform | n/a |
 
+## Modules ##
+
+| Name | Source | Version |
+|------|--------|---------|
+| dns | ./dns |  |
+| ipa0 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
+| ipa1 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
+| ipa2 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
+| security\_groups | ./security_groups |  |
+
+## Resources ##
+
+| Name | Type |
+|------|------|
+| [aws_iam_policy.provisionfreeipa_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_role_policy_attachment.provisionfreeipa_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_caller_identity.sharedservices](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_iam_policy_document.provisionfreeipa_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_organizations_organization.cool](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
+| [terraform_remote_state.cdm](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.images_parameterstore](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.master](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.networking](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.sharedservices](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| advertise_ipa_servers | A map whose keys are the leading part of the IPA servers' hostnames and whose keys are boolean values denoting whether that particular server should be advertised as an IPA server (e.g. {"ipa0" = true, "ipa1" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc. | `map(bool)` | `{"ipa0": true, "ipa1": true, "ipa2": true}` | no |
-| aws_region | The AWS region where the shared services account is to be created (e.g. "us-east-1"). | `string` | `us-east-1` | no |
-| cool_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | `string` | `cool.cyber.dhs.gov` | no |
-| provisionaccount_role_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account. | `string` | `ProvisionAccount` | no |
-| provisionfreeipa_policy_description | The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `Allows provisioning of FreeIPA in the Shared Services account.` | no |
-| provisionfreeipa_policy_name | The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `ProvisionFreeIPA` | no |
+| advertise\_ipa\_servers | A map whose keys are the leading part of the IPA servers' hostnames and whose keys are boolean values denoting whether that particular server should be advertised as an IPA server (e.g. {"ipa0" = true, "ipa1" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc. | `map(bool)` | `{"ipa0": true, "ipa1": true, "ipa2": true}` | no |
+| aws\_region | The AWS region where the shared services account is to be created (e.g. "us-east-1"). | `string` | `"us-east-1"` | no |
+| cool\_domain | The domain where the COOL resources reside (e.g. "cool.cyber.dhs.gov"). | `string` | `"cool.cyber.dhs.gov"` | no |
+| provisionaccount\_role\_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account. | `string` | `"ProvisionAccount"` | no |
+| provisionfreeipa\_policy\_description | The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `"Allows provisioning of FreeIPA in the Shared Services account."` | no |
+| provisionfreeipa\_policy\_name | The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `"ProvisionFreeIPA"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
-| trusted_cidr_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
+| trusted\_cidr\_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
 | ttl | The TTL value to use for Route53 DNS records (e.g. 3600).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `3600` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| client_security_group | The IPA client security group. |
+| client\_security\_group | The IPA client security group. |
 | server0 | The first IPA server EC2 instance. |
 | server1 | The second IPA server EC2 instance. |
 | server2 | The third IPA server EC2 instance. |
-| server_security_group | The IPA server security group. |
+| server\_security\_group | The IPA server security group. |
 
 ## Notes ##
 
