@@ -26,6 +26,24 @@ variable "cool_domain" {
   default     = "cool.cyber.dhs.gov"
 }
 
+variable "nessus_hostname_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname)."
+  default     = "/cdm/nessus_hostname"
+}
+
+variable "nessus_key_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key)."
+  default     = "/cdm/nessus_key"
+}
+
+variable "nessus_port_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port)."
+  default     = "/cdm/nessus_port"
+}
+
 variable "provisionaccount_role_name" {
   type        = string
   description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account."

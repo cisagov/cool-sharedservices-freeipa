@@ -33,13 +33,17 @@ module "security_groups" {
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
   hostname             = "ipa0.${var.cool_domain}"
   ip                   = local.ipa_ips[0]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   realm                = upper(var.cool_domain)
   security_group_ids = [
     module.security_groups.server.id,
@@ -51,13 +55,17 @@ module "ipa0" {
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
   hostname             = "ipa1.${var.cool_domain}"
   ip                   = local.ipa_ips[1]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
@@ -68,13 +76,17 @@ module "ipa1" {
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount
+    aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
   hostname             = "ipa2.${var.cool_domain}"
   ip                   = local.ipa_ips[2]
+  nessus_hostname_key  = var.nessus_hostname_key
+  nessus_key_key       = var.nessus_key_key
+  nessus_port_key      = var.nessus_port_key
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
