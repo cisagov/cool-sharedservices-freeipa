@@ -3,7 +3,6 @@ resource "aws_security_group" "client" {
   vpc_id = var.vpc_id
 
   description = "Security group for IPA clients"
-  tags        = var.tags
 }
 
 # Egress rules

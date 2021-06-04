@@ -24,7 +24,6 @@ module "security_groups" {
     aws = aws.sharedservicesprovisionaccount
   }
 
-  tags                = var.tags
   trusted_cidr_blocks = var.trusted_cidr_blocks
   vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
 }
@@ -50,7 +49,6 @@ module "ipa0" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 0"))
 }
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
@@ -71,7 +69,6 @@ module "ipa1" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 1"))
 }
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
@@ -92,7 +89,6 @@ module "ipa2" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 2"))
 }
 
 # Create the DNS entries for the IPA cluster

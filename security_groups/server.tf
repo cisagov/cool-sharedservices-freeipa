@@ -3,7 +3,6 @@ resource "aws_security_group" "server" {
   vpc_id = var.vpc_id
 
   description = "Security group for IPA servers"
-  tags        = var.tags
 }
 
 # Allow HTTP out anywhere.  This is necessary to retrieve updated
