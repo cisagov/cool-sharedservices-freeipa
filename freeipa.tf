@@ -32,7 +32,7 @@ module "security_groups" {
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
@@ -53,7 +53,7 @@ module "ipa0" {
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
@@ -73,7 +73,7 @@ module "ipa1" {
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
