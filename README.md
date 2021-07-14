@@ -25,10 +25,6 @@ module "example" {
 
   aws_region          = "us-east-1"
   cool_domain         = "example.com"
-  tags                = {
-    Key1 = "Value1"
-    Key2 = "Value2"
-  }
   trusted_cidr_blocks = [
     "10.99.49.0/24",
     "10.99.52.0/24"
@@ -41,15 +37,15 @@ module "example" {
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.0 |
-| aws | ~> 3.0 |
+| aws | ~> 3.38 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.0 |
-| aws.organizationsreadonly | ~> 3.0 |
-| aws.sharedservicesprovisionaccount | ~> 3.0 |
+| aws | ~> 3.38 |
+| aws.organizationsreadonly | ~> 3.38 |
+| aws.sharedservicesprovisionaccount | ~> 3.38 |
 | terraform | n/a |
 
 ## Modules ##
@@ -57,9 +53,9 @@ module "example" {
 | Name | Source | Version |
 |------|--------|---------|
 | dns | ./dns |  |
-| ipa0 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
-| ipa1 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
-| ipa2 | github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Flink-nessus-agent |  |
+| ipa0 | github.com/cisagov/freeipa-server-tf-module |  |
+| ipa1 | github.com/cisagov/freeipa-server-tf-module |  |
+| ipa2 | github.com/cisagov/freeipa-server-tf-module |  |
 | security\_groups | ./security_groups |  |
 
 ## Resources ##

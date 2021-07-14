@@ -24,7 +24,6 @@ module "security_groups" {
     aws = aws.sharedservicesprovisionaccount
   }
 
-  tags                = var.tags
   trusted_cidr_blocks = var.trusted_cidr_blocks
   vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
 }
@@ -33,7 +32,7 @@ module "security_groups" {
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
@@ -50,12 +49,11 @@ module "ipa0" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 0"))
 }
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
@@ -71,12 +69,11 @@ module "ipa1" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 1"))
 }
 module "ipa2" {
   source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
-    aws                                   = aws.sharedservicesprovisionaccount
+    aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
@@ -92,7 +89,6 @@ module "ipa2" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
-  tags      = merge(var.tags, map("Name", "FreeIPA 2"))
 }
 
 # Create the DNS entries for the IPA cluster
