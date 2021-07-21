@@ -76,6 +76,6 @@ variable "trusted_cidr_blocks" {
 
 variable "ttl" {
   type        = number
-  description = "The TTL value to use for Route53 DNS records (e.g. 3600).  A smaller value may be useful when the DNS records are changing often, for example when testing."
-  default     = 3600
+  description = "The TTL value to use for Route53 DNS records (e.g. 60)."
+  default     = 60
 }

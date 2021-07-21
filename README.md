@@ -89,7 +89,7 @@ module "example" {
 | provisionfreeipa\_policy\_name | The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `"ProvisionFreeIPA"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
 | trusted\_cidr\_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
-| ttl | The TTL value to use for Route53 DNS records (e.g. 3600).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `3600` | no |
+| ttl | The TTL value to use for Route53 DNS records (e.g. 60). | `number` | `60` | no |
 
 ## Outputs ##
 
