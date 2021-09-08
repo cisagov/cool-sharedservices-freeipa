@@ -36,7 +36,7 @@ module "example" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.0 |
+| terraform | ~> 0.13.0 |
 | aws | ~> 3.38 |
 
 ## Providers ##
@@ -52,11 +52,11 @@ module "example" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| dns | ./dns |  |
-| ipa0 | github.com/cisagov/freeipa-server-tf-module |  |
-| ipa1 | github.com/cisagov/freeipa-server-tf-module |  |
-| ipa2 | github.com/cisagov/freeipa-server-tf-module |  |
-| security\_groups | ./security_groups |  |
+| dns | ./dns | n/a |
+| ipa0 | github.com/cisagov/freeipa-server-tf-module | n/a |
+| ipa1 | github.com/cisagov/freeipa-server-tf-module | n/a |
+| ipa2 | github.com/cisagov/freeipa-server-tf-module | n/a |
+| security\_groups | ./security_groups | n/a |
 
 ## Resources ##
 
