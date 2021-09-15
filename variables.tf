@@ -64,7 +64,7 @@ variable "provisionfreeipa_policy_name" {
 
 variable "root_disk_size" {
   type        = number
-  description = "The size of the IPA instance's root disk in GB."
+  description = "The size of the IPA instance's root disk in GiB."
   default     = 8
 }
 
