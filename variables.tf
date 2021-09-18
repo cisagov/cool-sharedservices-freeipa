@@ -62,6 +62,12 @@ variable "provisionfreeipa_policy_name" {
   default     = "ProvisionFreeIPA"
 }
 
+variable "root_disk_size" {
+  type        = number
+  description = "The size of the IPA instance's root disk in GiB."
+  default     = 8
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created."
