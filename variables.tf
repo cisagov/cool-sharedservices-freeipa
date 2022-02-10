@@ -44,6 +44,16 @@ variable "nessus_port_key" {
   default     = "/cdm/nessus_port"
 }
 
+variable "netbios_name" {
+  type        = string
+  description = "The NetBIOS name to be used by the server (e.g. EXAMPLE).  Note that NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  default     = "COOL"
+  validation {
+    condition     = length(var.netbios_name) <= 15 && length(regexall("[^A-Z0-9-]", var.netbios_name)) == 0
+    error_message = "NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  }
+}
+
 variable "provisionaccount_role_name" {
   type        = string
   description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account."

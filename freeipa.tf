@@ -43,6 +43,7 @@ module "ipa0" {
   nessus_hostname_key  = var.nessus_hostname_key
   nessus_key_key       = var.nessus_key_key
   nessus_port_key      = var.nessus_port_key
+  netbios_name         = var.netbios_name
   realm                = upper(var.cool_domain)
   root_disk_size       = var.root_disk_size
   security_group_ids = [
@@ -65,6 +66,7 @@ module "ipa1" {
   nessus_hostname_key  = var.nessus_hostname_key
   nessus_key_key       = var.nessus_key_key
   nessus_port_key      = var.nessus_port_key
+  netbios_name         = var.netbios_name
   root_disk_size       = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
@@ -86,6 +88,7 @@ module "ipa2" {
   nessus_hostname_key  = var.nessus_hostname_key
   nessus_key_key       = var.nessus_key_key
   nessus_port_key      = var.nessus_port_key
+  netbios_name         = var.netbios_name
   root_disk_size       = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
