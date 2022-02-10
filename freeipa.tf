@@ -30,7 +30,7 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-netbios-name-to-freeipa-vars"
+  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
@@ -53,7 +53,7 @@ module "ipa0" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
 }
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-netbios-name-to-freeipa-vars"
+  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
@@ -75,7 +75,7 @@ module "ipa1" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
 }
 module "ipa2" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-netbios-name-to-freeipa-vars"
+  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
