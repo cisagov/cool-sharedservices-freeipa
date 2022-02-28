@@ -209,6 +209,72 @@ resource "aws_lb" "alb" {
   subnets = local.subnet_ids
 }
 
+# FreeIPA network load balancer target groups
+#
+# HTTP and HTTPS gets sent to the ALB, while everything else gets sent
+# directly to the IPA instances.
+resource "aws_lb_target_group" "nlb_not_tls" {
+  for_each = { for key, value in local.ipa_ports : key => value if value.protocol != "TLS" }
+  provider = aws.sharedservicesprovisionaccount
+
+  name     = each.key
+  port     = each.value.port
+  protocol = each.value.protocol
+  stickiness {
+    type = "source_ip"
+  }
+  target_type = contains([80, 443], each.value.port) ? "alb" : "instance"
+  vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
+}
+resource "aws_lb_target_group" "nlb_tls" {
+  for_each = { for key, value in local.ipa_ports : key => value if value.protocol == "TLS" }
+  provider = aws.sharedservicesprovisionaccount
+
+  name     = each.key
+  port     = each.value.port
+  protocol = each.value.protocol
+  # TLS target groups do not allow for stickiness
+  target_type = contains([80, 443], each.value.port) ? "alb" : "instance"
+  vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
+}
+
+# FreeIPA application load balancer target groups
+resource "aws_lb_target_group" "alb_http" {
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check {
+    # The response should be a redirect to HTTPS
+    matcher  = "308"
+    path     = "/ipa/ui/"
+    protocol = "HTTP"
+  }
+  name     = "HTTP"
+  port     = 80
+  protocol = "HTTP"
+  stickiness {
+    type = "lb_cookie"
+  }
+  target_type = "instance"
+  vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
+}
+resource "aws_lb_target_group" "alb_https" {
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check {
+    matcher  = "200,308"
+    path     = "/ipa/ui/"
+    protocol = "HTTPS"
+  }
+  name     = "HTTPS"
+  port     = 443
+  protocol = "HTTPS"
+  stickiness {
+    type = "lb_cookie"
+  }
+  target_type = "instance"
+  vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
+}
+
 # Create the DNS entries for the IPA cluster
 module "dns" {
   source = "./dns"
