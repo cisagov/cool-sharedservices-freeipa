@@ -22,6 +22,20 @@ provider "aws" {
   region = var.aws_region
 }
 
+# The provider used to modify public cyber.dhs.gov DNS resources inside
+# the DNS account.
+provider "aws" {
+  alias = "public_dns"
+  assume_role {
+    role_arn     = data.terraform_remote_state.public_dns.outputs.route53resourcechange_role.arn
+    session_name = local.caller_user_name
+  }
+  default_tags {
+    tags = var.tags
+  }
+  region = var.aws_region
+}
+
 # The provider used to create IAM roles that can read selected
 # SSM ParameterStore parameters in the Images account.
 provider "aws" {
