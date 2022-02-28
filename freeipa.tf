@@ -252,6 +252,8 @@ resource "aws_lb_target_group" "alb_http" {
   name     = "HTTP"
   port     = 80
   protocol = "HTTP"
+  # Send HTTP/2 requests to targets
+  protocol_version = "HTTP2"
   stickiness {
     type = "lb_cookie"
   }
@@ -269,6 +271,8 @@ resource "aws_lb_target_group" "alb_https" {
   name     = "HTTPS"
   port     = 443
   protocol = "HTTPS"
+  # Send HTTP/2 requests to targets
+  protocol_version = "HTTP2"
   stickiness {
     type = "lb_cookie"
   }
