@@ -5,7 +5,6 @@
 locals {
   # The subnets where the IPA servers are to be placed
   subnet_cidrs = keys(data.terraform_remote_state.networking.outputs.private_subnets)
-  subnet_ids   = [for subnet in data.terraform_remote_state.networking.outputs.private_subnets : subnet.id]
 
   # The IP addresses of the IPA servers.  AWS reserves the first four
   # and the last IP address in each subnet.
@@ -43,23 +42,6 @@ locals {
       protocol = "TLS",
       port     = 636,
     }
-  }
-}
-
-# This is currently the only way to get the ELB private IPs via
-# Terraform
-data "aws_network_interface" "nlb" {
-  for_each = toset(local.subnet_ids)
-  provider = aws.sharedservicesprovisionaccount
-
-  filter {
-    name   = "description"
-    values = ["ELB ${aws_lb.nlb.arn_suffix}"]
-  }
-
-  filter {
-    name   = "subnet-id"
-    values = [each.value]
   }
 }
 
@@ -142,31 +124,6 @@ module "ipa2" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
-}
-
-# FreeIPA network load balancer
-resource "aws_lb" "nlb" {
-  provider = aws.sharedservicesprovisionaccount
-
-  enable_cross_zone_load_balancing = true
-  internal                         = true
-  load_balancer_type               = "network"
-  name                             = "IPA"
-  subnets                          = local.subnet_ids
-}
-
-# FreeIPA application load balancer
-resource "aws_lb" "alb" {
-  provider = aws.sharedservicesprovisionaccount
-
-  enable_cross_zone_load_balancing = true
-  internal                         = true
-  load_balancer_type               = "application"
-  name                             = "IPA"
-  security_groups = [
-    module.security_groups.server.id,
-  ]
-  subnets = local.subnet_ids
 }
 
 # FreeIPA network load balancer target groups
