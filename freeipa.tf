@@ -70,6 +70,7 @@ module "security_groups" {
     aws = aws.sharedservicesprovisionaccount
   }
 
+  load_balancer_ips   = [for i in data.aws_network_interface.nlb : i.private_ip]
   trusted_cidr_blocks = var.trusted_cidr_blocks
   vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
 }
