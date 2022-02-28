@@ -46,6 +46,8 @@ resource "aws_lb_target_group" "nlb_not_tls" {
   stickiness {
     type = "source_ip"
   }
+  # HTTP and HTTPS will target the ALB, but everything else targets
+  # the instances directly.
   target_type = contains([80, 443], each.value.port) ? "alb" : "instance"
   vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
 }
@@ -56,7 +58,10 @@ resource "aws_lb_target_group" "nlb_tls" {
   name     = each.key
   port     = each.value.port
   protocol = each.value.protocol
-  # TLS target groups do not allow for stickiness
+  # TLS target groups do not allow for stickiness.
+  #
+  # HTTP and HTTPS will target the ALB, but everything else targets
+  # the instances directly.
   target_type = contains([80, 443], each.value.port) ? "alb" : "instance"
   vpc_id      = data.terraform_remote_state.networking.outputs.vpc.id
 }
