@@ -6,12 +6,22 @@
 
 variable "domain" {
   type        = string
-  description = "The domain for the IPA master (e.g. example.com)."
+  description = "The domain for the IPA cluster (e.g. example.com)."
 }
 
-variable "hosts" {
-  type        = map(object({ ip = string, reverse_zone_id = string, advertise = bool }))
-  description = "A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname, as well as a boolean value indicating whether the host should be advertised as an IPA server (e.g. {\"ipa0.example.com\" = {\"ip\" = \"10.0.0.1\", \"reverse_zone_id\" = \"ZKX36JXQ8W82L\", \"advertise\" = true}, \"ipa1.example.com\" = {\"ip\" = \"10.0.0.2\", \"reverse_zone_id\" = \"ZKX36JXQ8W93M\", \"advertise\" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc."
+variable "hostname" {
+  type        = string
+  description = "The hostname portion of the IPA FQDN (e.g. ipa).  This value and the value of the domain variable comprise the FQDN of the IPA cluster."
+}
+
+variable "load_balancer_dns_name" {
+  type        = string
+  description = "The Route53 DNS name of the Network Load Balancer in front of the IPA cluster (e.g. IPA-0123456789abcdef.elb.us-east-1.amazonaws.com)."
+}
+
+variable "load_balancer_zone_id" {
+  type        = string
+  description = "The Route53 DNS zone ID of the Network Load Balancer in front of the IPA cluster (e.g. ZKX36JXQ8W93M)."
 }
 
 variable "zone_id" {
@@ -28,5 +38,5 @@ variable "zone_id" {
 variable "ttl" {
   type        = number
   description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
-  default     = 86400
+  default     = 60
 }

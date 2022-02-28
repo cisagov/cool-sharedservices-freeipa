@@ -3,31 +3,24 @@
 This is a Terraform module for creating the DNS records for a FreeIPA
 cluster in the COOL shared services environment.
 
-Note that the DNS records are created such that requests are load
-balanced across all FreeIPA servers listed in the `hosts` input
-variable.
-
 ## Usage ##
 
 ```hcl
-module "example" {
-  source = "./master_dns"
+resource "aws_lb" "example" {
+  internal                         = true
+  load_balancer_type               = "network"
+  subnets                          = local.subnet_ids
+}
 
-  domain          = "example.com"
-  hosts           = {
-    "ipa0.example.com" = {
-      ip              = "10.0.0.1"
-      reverse_zone_id = "ZKX36JXQ8W82L"
-      advertise       = true
-    }
-    "ipa1.example.com" = {
-      ip              = "10.0.0.2"
-      reverse_zone_id = "ZKX36JXQ8W93M"
-      advertise       = false
-    }
-  }
-  ttl             = 60
-  zone_id         = "ZKX36JXQ8W93M"
+module "example" {
+  source = "./dns"
+
+  domain                 = "example.com"
+  hostname               = "ipa"
+  load_balancer_dns_name = aws_lb.example.dns_name
+  load_balancer_zone_id  = aws_lb.example.zone_id
+  ttl                    = 60
+  zone_id                = "ZKX36JXQ8W93M"
 }
 ```
 
@@ -59,16 +52,20 @@ No modules.
 | [aws_route53_record.master_SRV](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.password_SRV](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.server_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_record.server_PTR](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.server_A0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.server_A1](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.server_A2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.server_SRV](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| domain | The domain for the IPA master (e.g. example.com). | `string` | n/a | yes |
-| hosts | A map whose keys are the hostnames of the IPA servers and whose values are maps containing the IP and reverse zone ID corresponding to that hostname, as well as a boolean value indicating whether the host should be advertised as an IPA server (e.g. {"ipa0.example.com" = {"ip" = "10.0.0.1", "reverse\_zone\_id" = "ZKX36JXQ8W82L", "advertise" = true}, "ipa1.example.com" = {"ip" = "10.0.0.2", "reverse\_zone\_id" = "ZKX36JXQ8W93M", "advertise" = false}).  If the boolean value is false then the A and PTR records for the server are still created, but it is not listed in SVC records, etc. | `map(object({ ip = string, reverse_zone_id = string, advertise = bool }))` | n/a | yes |
-| ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `86400` | no |
+| domain | The domain for the IPA cluster (e.g. example.com). | `string` | n/a | yes |
+| hostname | The hostname portion of the IPA FQDN (e.g. ipa).  This value and the value of the domain variable comprise the FQDN of the IPA cluster. | `string` | n/a | yes |
+| load\_balancer\_dns\_name | The Route53 DNS name of the Network Load Balancer in front of the IPA cluster (e.g. IPA-0123456789abcdef.elb.us-east-1.amazonaws.com). | `string` | n/a | yes |
+| load\_balancer\_zone\_id | The Route53 DNS zone ID of the Network Load Balancer in front of the IPA cluster (e.g. ZKX36JXQ8W93M). | `string` | n/a | yes |
+| ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `60` | no |
 | zone\_id | The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W93M). | `string` | n/a | yes |
 
 ## Outputs ##

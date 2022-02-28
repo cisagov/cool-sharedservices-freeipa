@@ -453,24 +453,10 @@ module "dns" {
     aws = aws.sharedservicesprovisionaccount
   }
 
-  domain = var.cool_domain
-  hosts = {
-    "ipa0.${var.cool_domain}" = {
-      ip              = local.ipa_ips[0]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-      advertise       = var.advertise_ipa_servers["ipa0"]
-    }
-    "ipa1.${var.cool_domain}" = {
-      ip              = local.ipa_ips[1]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
-      advertise       = var.advertise_ipa_servers["ipa1"]
-    }
-    "ipa2.${var.cool_domain}" = {
-      ip              = local.ipa_ips[2]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
-      advertise       = var.advertise_ipa_servers["ipa2"]
-    }
-  }
-  ttl     = var.ttl
-  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
+  domain                 = var.cool_domain
+  hostname               = "ipa"
+  load_balancer_dns_name = aws_lb.nlb.dns_name
+  load_balancer_zone_id  = aws_lb.nlb.zone_id
+  ttl                    = var.ttl
+  zone_id                = data.terraform_remote_state.networking.outputs.private_zone.id
 }
