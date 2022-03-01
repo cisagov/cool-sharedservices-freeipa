@@ -1,36 +1,6 @@
 #-------------------------------------------------------------------------------
-# Create all necessary DNS records for the IPA servers.
+# Create all necessary DNS records for the IPA cluster.
 # -------------------------------------------------------------------------------
-resource "aws_route53_record" "server_A0" {
-  zone_id = var.zone_id
-  name    = "ipa0.staging.cool.cyber.dhs.gov"
-  type    = "A"
-  ttl     = var.ttl
-  records = [
-    "10.128.0.4",
-  ]
-}
-
-resource "aws_route53_record" "server_A1" {
-  zone_id = var.zone_id
-  name    = "ipa1.staging.cool.cyber.dhs.gov"
-  type    = "A"
-  ttl     = var.ttl
-  records = [
-    "10.128.1.4",
-  ]
-}
-
-resource "aws_route53_record" "server_A2" {
-  zone_id = var.zone_id
-  name    = "ipa2.staging.cool.cyber.dhs.gov"
-  type    = "A"
-  ttl     = var.ttl
-  records = [
-    "10.128.2.4",
-  ]
-}
-
 resource "aws_route53_record" "server_A" {
   alias {
     name                   = var.load_balancer_dns_name

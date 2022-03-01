@@ -5,6 +5,16 @@
 locals {
   # The subnets where the IPA servers are to be placed
   subnet_cidrs = keys(data.terraform_remote_state.networking.outputs.private_subnets)
+
+  # AWS reserves the first four and the last IP address in each
+  # subnet.
+  #
+  # cisagov/freeipa-server-tf-module now requires us to assign IPs in
+  # order to break the dependency of DNS record resources on the
+  # corresponding EC2 instance resources; otherwise, it is not
+  # possible to recreate the IPA servers one by one as is required
+  # when a new FreeIPA AMI is made available.
+  server_ips = { for index, cidr in local.subnet_cidrs : cidr => { index : index, ip : cidrhost(cidr, 4) } }
 }
 
 # Create the IPA client and server security groups
@@ -30,7 +40,7 @@ module "ipa" {
   # corresponding EC2 instance resources; otherwise, it is not
   # possible to recreate the IPA servers one by one as is required
   # when a new FreeIPA AMI is made available.
-  for_each = { for index, cidr in local.subnet_cidrs : cidr => { index : index, ip : cidrhost(cidr, 4) } }
+  for_each = local.server_ips
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
@@ -51,6 +61,20 @@ module "ipa" {
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[each.value.index]].id
+}
+
+# Create DNS records for the individual IPA servers
+resource "aws_route53_record" "individual_servers_A" {
+  for_each = local.server_ips
+  provider = aws.sharedservicesprovisionaccount
+
+  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
+  name    = format("ipa%d.%s", each.value.index, var.cool_domain)
+  type    = "A"
+  ttl     = var.ttl
+  records = [
+    each.value.ip,
+  ]
 }
 
 # Create the DNS entries for the IPA cluster
