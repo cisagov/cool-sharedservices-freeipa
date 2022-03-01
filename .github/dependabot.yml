@@ -23,3 +23,17 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "hashicorp/aws"
+
+  - package-ecosystem: "terraform"
+    directory: "/dns"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "hashicorp/aws"
+
+  - package-ecosystem: "terraform"
+    directory: "/security_groups"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "hashicorp/aws"
