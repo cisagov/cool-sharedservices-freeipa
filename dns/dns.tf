@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # Create all necessary DNS records for the IPA cluster.
 # -------------------------------------------------------------------------------
-resource "aws_route53_record" "server_A" {
+resource "aws_route53_record" "cluster_A" {
   alias {
     name                   = var.load_balancer_dns_name
     zone_id                = var.load_balancer_zone_id
