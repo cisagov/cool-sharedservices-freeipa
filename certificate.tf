@@ -16,6 +16,9 @@ resource "aws_acm_certificate" "ipa" {
   validation_method = "DNS"
 
   lifecycle {
+    # See here for an explanation as to why we specify this lifecycle
+    # attribute:
+    # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate
     create_before_destroy = true
   }
 }
