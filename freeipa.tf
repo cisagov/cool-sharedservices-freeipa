@@ -31,15 +31,7 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-load-balancer-hostname"
-  # AWS reserves the first four and the last IP address in each
-  # subnet.
-  #
-  # cisagov/freeipa-server-tf-module now requires us to assign IPs in
-  # order to break the dependency of DNS record resources on the
-  # corresponding EC2 instance resources; otherwise, it is not
-  # possible to recreate the IPA servers one by one as is required
-  # when a new FreeIPA AMI is made available.
+  source   = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-load-balancer-hostname"
   for_each = local.server_ips
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount
