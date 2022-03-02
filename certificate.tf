@@ -36,9 +36,15 @@ resource "aws_route53_record" "ipa_cert_validation" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = data.terraform_remote_state.public_dns.outputs.cyber_dhs_gov_zone.id
+  # These are just records that are put in place so that ACM can
+  # verify we own the domain. If var.ttl is set to a large value
+  # because we don't expect the FreeIPA-specific DNS records to
+  # change, we would still want these records to have a low TTL so
+  # that redeployments can happen in a timely manner.  Therefore we do
+  # not use var.ttl here.
+  ttl     = 60
+  type    = each.value.type
+  zone_id = data.terraform_remote_state.public_dns.outputs.cyber_dhs_gov_zone.id
 }
 
 resource "aws_acm_certificate_validation" "ipa" {
