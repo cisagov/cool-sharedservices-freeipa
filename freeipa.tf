@@ -31,7 +31,7 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-load-balancer-hostname"
   # AWS reserves the first four and the last IP address in each
   # subnet.
   #
