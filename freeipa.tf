@@ -46,16 +46,17 @@ module "ipa" {
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
-  ami_owner_account_id = local.images_account_id
-  domain               = var.cool_domain
-  hostname             = format("ipa%d.%s", each.value.index, var.cool_domain)
-  ip                   = each.value.ip
-  nessus_hostname_key  = var.nessus_hostname_key
-  nessus_key_key       = var.nessus_key_key
-  nessus_port_key      = var.nessus_port_key
-  netbios_name         = var.netbios_name
-  realm                = upper(var.cool_domain)
-  root_disk_size       = var.root_disk_size
+  ami_owner_account_id   = local.images_account_id
+  domain                 = var.cool_domain
+  hostname               = format("ipa%d.%s", each.value.index, var.cool_domain)
+  ip                     = each.value.ip
+  load_balancer_hostname = "ipa.${var.cool_domain}"
+  nessus_hostname_key    = var.nessus_hostname_key
+  nessus_key_key         = var.nessus_key_key
+  nessus_port_key        = var.nessus_port_key
+  netbios_name           = var.netbios_name
+  realm                  = upper(var.cool_domain)
+  root_disk_size         = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
