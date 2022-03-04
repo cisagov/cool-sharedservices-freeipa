@@ -40,9 +40,10 @@ resource "aws_lb_target_group" "nlb_not_tls" {
   for_each = { for key, value in local.ipa_ports : key => value if value.protocol != "TLS" }
   provider = aws.sharedservicesprovisionaccount
 
-  name     = each.key
-  port     = each.value.port
-  protocol = each.value.protocol
+  connection_termination = true
+  name                   = each.key
+  port                   = each.value.port
+  protocol               = each.value.protocol
   stickiness {
     type = "source_ip"
   }
@@ -55,9 +56,10 @@ resource "aws_lb_target_group" "nlb_tls" {
   for_each = { for key, value in local.ipa_ports : key => value if value.protocol == "TLS" }
   provider = aws.sharedservicesprovisionaccount
 
-  name     = each.key
-  port     = each.value.port
-  protocol = each.value.protocol
+  connection_termination = true
+  name                   = each.key
+  port                   = each.value.port
+  protocol               = each.value.protocol
   # TLS target groups do not allow for stickiness.
   #
   # HTTP and HTTPS will target the ALB, but everything else targets
@@ -70,6 +72,7 @@ resource "aws_lb_target_group" "nlb_tls" {
 resource "aws_lb_target_group" "alb_http" {
   provider = aws.sharedservicesprovisionaccount
 
+  connection_termination = true
   health_check {
     # The response should be a redirect to HTTPS
     matcher  = "308"
@@ -90,6 +93,7 @@ resource "aws_lb_target_group" "alb_http" {
 resource "aws_lb_target_group" "alb_https" {
   provider = aws.sharedservicesprovisionaccount
 
+  connection_termination = true
   health_check {
     matcher  = "200,308"
     path     = "/ipa/ui/"
