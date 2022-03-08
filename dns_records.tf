@@ -2,11 +2,6 @@
 # Create all necessary DNS records for the IPA servers.
 # -------------------------------------------------------------------------------
 locals {
-  tcp_and_udp = {
-    tcp = "tcp",
-    udp = "udp",
-  }
-
   # The Route53 zone where the IPA server DNS records should be
   # created.
   zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
@@ -90,13 +85,47 @@ resource "aws_route53_record" "server2_PTR" {
   zone_id = local.reverse_zone_ids[2]
 }
 
-resource "aws_route53_record" "ca_A" {
+resource "aws_route53_record" "ipa_A" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name    = "ipa-ca.${var.cool_domain}"
-  records = local.ipa_ips
-  ttl     = var.ttl
-  type    = "A"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "ipa.${var.cool_domain}"
+  ttl             = var.ttl
+  type            = "A"
+  records = [
+    each.value.server.private_ip,
+  ]
+  set_identifier = each.value.hostname
+  weighted_routing_policy {
+    weight = 10
+  }
+  zone_id = local.zone_id
+}
+
+resource "aws_route53_record" "ca_A" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "ipa-ca.${var.cool_domain}"
+  ttl             = var.ttl
+  type            = "A"
+  records = [
+    each.value.server.private_ip,
+  ]
+  set_identifier = each.value.hostname
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
 
@@ -110,75 +139,178 @@ resource "aws_route53_record" "kerberos_TXT" {
   zone_id = local.zone_id
 }
 
-resource "aws_route53_record" "master_SRV" {
-  for_each = local.tcp_and_udp
+resource "aws_route53_record" "master_tcp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name = "_kerberos-master._${each.value}.${var.cool_domain}"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kerberos-master._tcp.${var.cool_domain}"
   records = [
-    "0 100 88 ipa0.${var.cool_domain}",
-    "0 100 88 ipa1.${var.cool_domain}",
-    "0 100 88 ipa2.${var.cool_domain}",
+    "0 10 88 ${each.value.hostname}.${var.cool_domain}",
   ]
-  ttl     = var.ttl
-  type    = "SRV"
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
 
-resource "aws_route53_record" "server_SRV" {
-  for_each = local.tcp_and_udp
+resource "aws_route53_record" "master_udp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name = "_kerberos._${each.value}.${var.cool_domain}"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kerberos-master._udp.${var.cool_domain}"
   records = [
-    "0 100 88 ipa0.${var.cool_domain}",
-    "0 100 88 ipa1.${var.cool_domain}",
-    "0 100 88 ipa2.${var.cool_domain}",
+    "0 10 88 ${each.value.hostname}.${var.cool_domain}",
   ]
-  ttl     = var.ttl
-  type    = "SRV"
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
 
-resource "aws_route53_record" "password_SRV" {
-  for_each = local.tcp_and_udp
+resource "aws_route53_record" "server_tcp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name = "_kpasswd._${each.value}.${var.cool_domain}"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kerberos._tcp.${var.cool_domain}"
   records = [
-    "0 100 464 ipa0.${var.cool_domain}",
-    "0 100 464 ipa1.${var.cool_domain}",
-    "0 100 464 ipa2.${var.cool_domain}",
+    "0 10 88 ${each.value.hostname}.${var.cool_domain}",
   ]
-  ttl     = var.ttl
-  type    = "SRV"
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
+  zone_id = local.zone_id
+}
+
+resource "aws_route53_record" "server_udp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kerberos._udp.${var.cool_domain}"
+  records = [
+    "0 10 88 ${each.value.hostname}.${var.cool_domain}",
+  ]
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
+  zone_id = local.zone_id
+}
+
+resource "aws_route53_record" "password_tcp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kpasswd._tcp.${var.cool_domain}"
+  records = [
+    "0 10 464 ${each.value.hostname}.${var.cool_domain}",
+  ]
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
+  zone_id = local.zone_id
+}
+
+resource "aws_route53_record" "password_udp_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
+  provider = aws.sharedservicesprovisionaccount
+
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_kpasswd._udp.${var.cool_domain}"
+  records = [
+    "0 10 464 ${each.value.hostname}.${var.cool_domain}",
+  ]
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
 
 resource "aws_route53_record" "ldap_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name = "_ldap._tcp.${var.cool_domain}"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_ldap._tcp.${var.cool_domain}"
   records = [
-    "0 100 389 ipa0.${var.cool_domain}",
-    "0 100 389 ipa1.${var.cool_domain}",
-    "0 100 389 ipa2.${var.cool_domain}",
+    "0 10 389 ${each.value.hostname}.${var.cool_domain}",
   ]
-  ttl     = var.ttl
-  type    = "SRV"
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
 
 resource "aws_route53_record" "ldaps_SRV" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name = "_ldaps._tcp.${var.cool_domain}"
+  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  name            = "_ldaps._tcp.${var.cool_domain}"
   records = [
-    "0 100 636 ipa0.${var.cool_domain}",
-    "0 100 636 ipa1.${var.cool_domain}",
-    "0 100 636 ipa2.${var.cool_domain}",
+    "0 10 636 ${each.value.hostname}.${var.cool_domain}",
   ]
-  ttl     = var.ttl
-  type    = "SRV"
+  set_identifier = each.value.hostname
+  ttl            = var.ttl
+  type           = "SRV"
+  weighted_routing_policy {
+    weight = 10
+  }
   zone_id = local.zone_id
 }
