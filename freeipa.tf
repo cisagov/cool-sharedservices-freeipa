@@ -19,10 +19,10 @@ locals {
 
 # Create the IPA client and server security groups
 module "security_groups" {
-  source = "./security_groups"
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
+  source = "./security_groups"
 
   trusted_cidr_blocks = var.trusted_cidr_blocks
   vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
@@ -30,11 +30,11 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -53,11 +53,11 @@ module "ipa0" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
 }
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -75,11 +75,11 @@ module "ipa1" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
 }
 module "ipa2" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -116,10 +116,10 @@ module "cw_alarms_ipa" {
 
 # Create the DNS entries for the IPA cluster
 module "dns" {
-  source = "./dns"
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
+  source = "./dns"
 
   domain = var.cool_domain
   hosts = {
