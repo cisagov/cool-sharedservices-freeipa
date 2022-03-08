@@ -97,6 +97,23 @@ module "ipa2" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
 }
 
+# CloudWatch alarms for the FreeIPA instances
+module "cw_alarms_ipa" {
+  providers = {
+    aws = aws.sharedservicesprovisionaccount
+  }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=first-commits"
+
+  alarm_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+  instance_ids = [
+    module.ipa0.server.id,
+    module.ipa1.server.id,
+    module.ipa2.server.id,
+  ]
+  insufficient_data_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+}
+
 # Create the DNS entries for the IPA cluster
 module "dns" {
   source = "./dns"
