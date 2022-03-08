@@ -93,7 +93,7 @@ resource "aws_route53_record" "ipa_A" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "ipa.${var.cool_domain}"
   ttl             = var.ttl
   type            = "A"
@@ -115,7 +115,7 @@ resource "aws_route53_record" "ca_A" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "ipa-ca.${var.cool_domain}"
   ttl             = var.ttl
   type            = "A"
@@ -147,7 +147,7 @@ resource "aws_route53_record" "master_tcp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kerberos-master._tcp.${var.cool_domain}"
   records = [
     "0 10 88 ${each.value.hostname}.${var.cool_domain}",
@@ -169,7 +169,7 @@ resource "aws_route53_record" "master_udp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kerberos-master._udp.${var.cool_domain}"
   records = [
     "0 10 88 ${each.value.hostname}.${var.cool_domain}",
@@ -191,7 +191,7 @@ resource "aws_route53_record" "server_tcp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kerberos._tcp.${var.cool_domain}"
   records = [
     "0 10 88 ${each.value.hostname}.${var.cool_domain}",
@@ -213,7 +213,7 @@ resource "aws_route53_record" "server_udp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kerberos._udp.${var.cool_domain}"
   records = [
     "0 10 88 ${each.value.hostname}.${var.cool_domain}",
@@ -235,7 +235,7 @@ resource "aws_route53_record" "password_tcp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kpasswd._tcp.${var.cool_domain}"
   records = [
     "0 10 464 ${each.value.hostname}.${var.cool_domain}",
@@ -257,7 +257,7 @@ resource "aws_route53_record" "password_udp_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_kpasswd._udp.${var.cool_domain}"
   records = [
     "0 10 464 ${each.value.hostname}.${var.cool_domain}",
@@ -279,7 +279,7 @@ resource "aws_route53_record" "ldap_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_ldap._tcp.${var.cool_domain}"
   records = [
     "0 10 389 ${each.value.hostname}.${var.cool_domain}",
@@ -301,7 +301,7 @@ resource "aws_route53_record" "ldaps_SRV" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  health_check_id = aws_route53_health_check.system_status_check[each.key].id
+  health_check_id = aws_route53_health_check.overall[each.key].id
   name            = "_ldaps._tcp.${var.cool_domain}"
   records = [
     "0 10 636 ${each.value.hostname}.${var.cool_domain}",
