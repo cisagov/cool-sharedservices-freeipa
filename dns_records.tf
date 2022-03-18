@@ -11,78 +11,40 @@ locals {
   reverse_zone_ids = [for zone in data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones : zone.id]
 }
 
-resource "aws_route53_record" "server0_A" {
+resource "aws_route53_record" "server_A" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", count = 0 }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", count = 1 }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", count = 2 }
+  }
   provider = aws.sharedservicesprovisionaccount
 
-  name    = "ipa0.${var.cool_domain}"
-  records = [local.ipa_ips[0]]
-  ttl     = var.ttl
-  type    = "A"
-  zone_id = local.zone_id
-}
-resource "aws_route53_record" "server1_A" {
-  provider = aws.sharedservicesprovisionaccount
-
-  name    = "ipa1.${var.cool_domain}"
-  records = [local.ipa_ips[1]]
-  ttl     = var.ttl
-  type    = "A"
-  zone_id = local.zone_id
-}
-resource "aws_route53_record" "server2_A" {
-  provider = aws.sharedservicesprovisionaccount
-
-  name    = "ipa2.${var.cool_domain}"
-  records = [local.ipa_ips[2]]
+  name    = "${each.value.hostname}.${var.cool_domain}"
+  records = [local.ipa_ips[each.value.count]]
   ttl     = var.ttl
   type    = "A"
   zone_id = local.zone_id
 }
 
-resource "aws_route53_record" "server0_PTR" {
+resource "aws_route53_record" "server_PTR" {
+  for_each = {
+    "${module.ipa0.server.id}" = { hostname = "ipa0", count = 0 }
+    "${module.ipa1.server.id}" = { hostname = "ipa1", count = 1 }
+    "${module.ipa2.server.id}" = { hostname = "ipa2", count = 2 }
+  }
   provider = aws.sharedservicesprovisionaccount
 
   name = format(
     "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", local.ipa_ips[0]), 3),
-    element(split(".", local.ipa_ips[0]), 2),
-    element(split(".", local.ipa_ips[0]), 1),
-    element(split(".", local.ipa_ips[0]), 0),
+    element(split(".", local.ipa_ips[each.value.count]), 3),
+    element(split(".", local.ipa_ips[each.value.count]), 2),
+    element(split(".", local.ipa_ips[each.value.count]), 1),
+    element(split(".", local.ipa_ips[each.value.count]), 0),
   )
-  records = ["ipa0.${var.cool_domain}"]
+  records = ["${each.value.hostname}.${var.cool_domain}"]
   ttl     = var.ttl
   type    = "PTR"
-  zone_id = local.reverse_zone_ids[0]
-}
-resource "aws_route53_record" "server1_PTR" {
-  provider = aws.sharedservicesprovisionaccount
-
-  name = format(
-    "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", local.ipa_ips[1]), 3),
-    element(split(".", local.ipa_ips[1]), 2),
-    element(split(".", local.ipa_ips[1]), 1),
-    element(split(".", local.ipa_ips[1]), 0),
-  )
-  records = ["ipa1.${var.cool_domain}"]
-  ttl     = var.ttl
-  type    = "PTR"
-  zone_id = local.reverse_zone_ids[1]
-}
-resource "aws_route53_record" "server2_PTR" {
-  provider = aws.sharedservicesprovisionaccount
-
-  name = format(
-    "%s.%s.%s.%s.in-addr.arpa.",
-    element(split(".", local.ipa_ips[2]), 3),
-    element(split(".", local.ipa_ips[2]), 2),
-    element(split(".", local.ipa_ips[2]), 1),
-    element(split(".", local.ipa_ips[2]), 0),
-  )
-  records = ["ipa2.${var.cool_domain}"]
-  ttl     = var.ttl
-  type    = "PTR"
-  zone_id = local.reverse_zone_ids[2]
+  zone_id = local.reverse_zone_ids[each.value.count]
 }
 
 resource "aws_route53_record" "ipa_A" {
