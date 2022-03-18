@@ -103,9 +103,9 @@ resource "aws_route53_record" "kerberos_TXT" {
 
 resource "aws_route53_record" "master_tcp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -125,9 +125,9 @@ resource "aws_route53_record" "master_tcp_SRV" {
 
 resource "aws_route53_record" "master_udp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -147,9 +147,9 @@ resource "aws_route53_record" "master_udp_SRV" {
 
 resource "aws_route53_record" "server_tcp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -169,9 +169,9 @@ resource "aws_route53_record" "server_tcp_SRV" {
 
 resource "aws_route53_record" "server_udp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -191,9 +191,9 @@ resource "aws_route53_record" "server_udp_SRV" {
 
 resource "aws_route53_record" "password_tcp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -213,9 +213,9 @@ resource "aws_route53_record" "password_tcp_SRV" {
 
 resource "aws_route53_record" "password_udp_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -235,9 +235,9 @@ resource "aws_route53_record" "password_udp_SRV" {
 
 resource "aws_route53_record" "ldap_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -257,9 +257,9 @@ resource "aws_route53_record" "ldap_SRV" {
 
 resource "aws_route53_record" "ldaps_SRV" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
