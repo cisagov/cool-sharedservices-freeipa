@@ -4,9 +4,9 @@
 
 resource "aws_route53_health_check" "system_status_check" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -19,9 +19,9 @@ resource "aws_route53_health_check" "system_status_check" {
 
 resource "aws_route53_health_check" "instance_status_check" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
@@ -37,9 +37,9 @@ resource "aws_route53_health_check" "instance_status_check" {
 # healthy.
 resource "aws_route53_health_check" "overall" {
   for_each = {
-    "${module.ipa0.server.id}" = { hostname = "ipa0", server = module.ipa0.server }
-    "${module.ipa1.server.id}" = { hostname = "ipa1", server = module.ipa1.server }
-    "${module.ipa2.server.id}" = { hostname = "ipa2", server = module.ipa2.server }
+    "${module.ipa0.server.id}" = { hostname = "ipa0" }
+    "${module.ipa1.server.id}" = { hostname = "ipa1" }
+    "${module.ipa2.server.id}" = { hostname = "ipa2" }
   }
   provider = aws.sharedservicesprovisionaccount
 
