@@ -19,10 +19,10 @@ locals {
 
 # Create the IPA client and server security groups
 module "security_groups" {
-  source = "./security_groups"
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
+  source = "./security_groups"
 
   trusted_cidr_blocks = var.trusted_cidr_blocks
   vpc_id              = data.terraform_remote_state.networking.outputs.vpc.id
@@ -30,11 +30,11 @@ module "security_groups" {
 
 # Create the IPA servers
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -53,11 +53,11 @@ module "ipa0" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
 }
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -75,11 +75,11 @@ module "ipa1" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
 }
 module "ipa2" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
   providers = {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id = local.images_account_id
   domain               = var.cool_domain
@@ -97,31 +97,19 @@ module "ipa2" {
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
 }
 
-# Create the DNS entries for the IPA cluster
-module "dns" {
-  source = "./dns"
+# CloudWatch alarms for the FreeIPA instances
+module "cw_alarms_ipa" {
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
-  domain = var.cool_domain
-  hosts = {
-    "ipa0.${var.cool_domain}" = {
-      ip              = local.ipa_ips[0]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[0]].id
-      advertise       = var.advertise_ipa_servers["ipa0"]
-    }
-    "ipa1.${var.cool_domain}" = {
-      ip              = local.ipa_ips[1]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[1]].id
-      advertise       = var.advertise_ipa_servers["ipa1"]
-    }
-    "ipa2.${var.cool_domain}" = {
-      ip              = local.ipa_ips[2]
-      reverse_zone_id = data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones[local.subnet_cidrs[2]].id
-      advertise       = var.advertise_ipa_servers["ipa2"]
-    }
-  }
-  ttl     = var.ttl
-  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
+  alarm_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+  instance_ids = [
+    module.ipa0.server.id,
+    module.ipa1.server.id,
+    module.ipa2.server.id,
+  ]
+  insufficient_data_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+  ok_actions                = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
 }
