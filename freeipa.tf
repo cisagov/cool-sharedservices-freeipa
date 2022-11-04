@@ -49,6 +49,10 @@ module "ipa0" {
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
+    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
+    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
+    # Used to pull the CDM agent parameters from SSM
+    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
 }
@@ -71,6 +75,10 @@ module "ipa1" {
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
+    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
+    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
+    # Used to pull the CDM agent parameters from SSM
+    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
 }
@@ -93,6 +101,10 @@ module "ipa2" {
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
+    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
+    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
+    # Used to pull the CDM agent parameters from SSM
+    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
   ]
   subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
 }
