@@ -34,14 +34,6 @@ updates:
       - dependency-name: "hashicorp/aws"
 
   - package-ecosystem: "terraform"
-    directory: "/dns"
-    schedule:
-      interval: "weekly"
-    # Managed by cisagov/skeleton-tf-module
-    ignore:
-      - dependency-name: "hashicorp/aws"
-
-  - package-ecosystem: "terraform"
     directory: "/security_groups"
     schedule:
       interval: "weekly"
