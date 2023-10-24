@@ -34,18 +34,20 @@ module "ipa0" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
 
-  ami_owner_account_id = local.images_account_id
-  domain               = var.cool_domain
-  hostname             = "ipa0.${var.cool_domain}"
-  ip                   = local.ipa_ips[0]
-  nessus_hostname_key  = var.nessus_hostname_key
-  nessus_key_key       = var.nessus_key_key
-  nessus_port_key      = var.nessus_port_key
-  netbios_name         = var.netbios_name
-  realm                = upper(var.cool_domain)
-  root_disk_size       = var.root_disk_size
+  ami_owner_account_id                      = local.images_account_id
+  crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
+  crowdstrike_falcon_sensor_tags_key        = var.crowdstrike_falcon_sensor_tags_key
+  domain                                    = var.cool_domain
+  hostname                                  = "ipa0.${var.cool_domain}"
+  ip                                        = local.ipa_ips[0]
+  nessus_hostname_key                       = var.nessus_hostname_key
+  nessus_key_key                            = var.nessus_key_key
+  nessus_port_key                           = var.nessus_port_key
+  netbios_name                              = var.netbios_name
+  realm                                     = upper(var.cool_domain)
+  root_disk_size                            = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
@@ -61,17 +63,19 @@ module "ipa1" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
 
-  ami_owner_account_id = local.images_account_id
-  domain               = var.cool_domain
-  hostname             = "ipa1.${var.cool_domain}"
-  ip                   = local.ipa_ips[1]
-  nessus_hostname_key  = var.nessus_hostname_key
-  nessus_key_key       = var.nessus_key_key
-  nessus_port_key      = var.nessus_port_key
-  netbios_name         = var.netbios_name
-  root_disk_size       = var.root_disk_size
+  ami_owner_account_id                      = local.images_account_id
+  crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
+  crowdstrike_falcon_sensor_tags_key        = var.crowdstrike_falcon_sensor_tags_key
+  domain                                    = var.cool_domain
+  hostname                                  = "ipa1.${var.cool_domain}"
+  ip                                        = local.ipa_ips[1]
+  nessus_hostname_key                       = var.nessus_hostname_key
+  nessus_key_key                            = var.nessus_key_key
+  nessus_port_key                           = var.nessus_port_key
+  netbios_name                              = var.netbios_name
+  root_disk_size                            = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
@@ -87,17 +91,19 @@ module "ipa2" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
 
-  ami_owner_account_id = local.images_account_id
-  domain               = var.cool_domain
-  hostname             = "ipa2.${var.cool_domain}"
-  ip                   = local.ipa_ips[2]
-  nessus_hostname_key  = var.nessus_hostname_key
-  nessus_key_key       = var.nessus_key_key
-  nessus_port_key      = var.nessus_port_key
-  netbios_name         = var.netbios_name
-  root_disk_size       = var.root_disk_size
+  ami_owner_account_id                      = local.images_account_id
+  crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
+  crowdstrike_falcon_sensor_tags_key        = var.crowdstrike_falcon_sensor_tags_key
+  domain                                    = var.cool_domain
+  hostname                                  = "ipa2.${var.cool_domain}"
+  ip                                        = local.ipa_ips[2]
+  nessus_hostname_key                       = var.nessus_hostname_key
+  nessus_key_key                            = var.nessus_key_key
+  nessus_port_key                           = var.nessus_port_key
+  netbios_name                              = var.netbios_name
+  root_disk_size                            = var.root_disk_size
   security_group_ids = [
     module.security_groups.server.id,
     data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
