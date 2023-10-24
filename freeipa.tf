@@ -34,7 +34,7 @@ module "ipa0" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
@@ -63,7 +63,7 @@ module "ipa1" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
@@ -91,7 +91,7 @@ module "ipa2" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=improvement%2Fadd-crowdstrike-falcon"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
