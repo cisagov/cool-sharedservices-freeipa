@@ -14,18 +14,19 @@ module "example" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 
 ## Modules ##
 
@@ -58,3 +59,4 @@ No modules.
 |------|-------------|
 | client | The IPA client security group. |
 | server | The IPA server security group. |
+<!-- END_TF_DOCS -->

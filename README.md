@@ -32,20 +32,21 @@ module "example" {
 }
 ```
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
-| aws.organizationsreadonly | ~> 3.38 |
-| aws.sharedservicesprovisionaccount | ~> 3.38 |
+| aws | ~> 4.9 |
+| aws.organizationsreadonly | ~> 4.9 |
+| aws.sharedservicesprovisionaccount | ~> 4.9 |
 | terraform | n/a |
 
 ## Modules ##
@@ -119,6 +120,7 @@ module "example" {
 | server1 | The second IPA server EC2 instance. |
 | server2 | The third IPA server EC2 instance. |
 | server\_security\_group | The IPA server security group. |
+<!-- END_TF_DOCS -->
 
 ## Notes ##
 
