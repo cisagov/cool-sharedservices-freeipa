@@ -5,8 +5,8 @@
 # ------------------------------------------------------------------------------
 
 variable "vpc_id" {
-  type        = string
   description = "The ID of the VPC where the IPA cluster is to be instantiated (e.g. vpc-2f09a348)."
+  type        = string
 }
 
 # ------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ variable "vpc_id" {
 # ------------------------------------------------------------------------------
 
 variable "trusted_cidr_blocks" {
-  type        = list(string)
-  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
+  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
+  type        = list(string)
 }

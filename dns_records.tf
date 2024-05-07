@@ -2,13 +2,13 @@
 # Create all necessary DNS records for the IPA servers.
 # -------------------------------------------------------------------------------
 locals {
-  # The Route53 zone where the IPA server DNS records should be
-  # created.
-  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
-
   # Route53 reverse zones corresponding to the subnets where the
   # FreeIPA servers reside.
   reverse_zone_ids = [for zone in data.terraform_remote_state.networking.outputs.private_subnet_private_reverse_zones : zone.id]
+
+  # The Route53 zone where the IPA server DNS records should be
+  # created.
+  zone_id = data.terraform_remote_state.networking.outputs.private_zone.id
 }
 
 resource "aws_route53_record" "server_A" {
