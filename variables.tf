@@ -5,51 +5,51 @@
 # ------------------------------------------------------------------------------
 
 variable "aws_region" {
-  type        = string
-  description = "The AWS region where the shared services account is to be created (e.g. \"us-east-1\")."
   default     = "us-east-1"
+  description = "The AWS region where the shared services account is to be created (e.g. \"us-east-1\")."
+  type        = string
 }
 
 variable "cool_domain" {
-  type        = string
-  description = "The domain where the COOL resources reside (e.g. \"cool.cyber.dhs.gov\")."
   default     = "cool.cyber.dhs.gov"
+  description = "The domain where the COOL resources reside (e.g. \"cool.cyber.dhs.gov\")."
+  type        = string
 }
 
 variable "crowdstrike_falcon_sensor_customer_id_key" {
-  type        = string
-  description = "The SSM Parameter Store key whose corresponding value contains the customer ID for CrowdStrike Falcon (e.g. /cdm/falcon/customer_id)."
   default     = "/cdm/falcon/customer_id"
+  description = "The SSM Parameter Store key whose corresponding value contains the customer ID for CrowdStrike Falcon (e.g. /cdm/falcon/customer_id)."
+  type        = string
 }
 
 variable "crowdstrike_falcon_sensor_tags_key" {
-  type        = string
-  description = "The SSM Parameter Store key whose corresponding value contains a comma-delimited list of tags that are to be applied to CrowdStrike Falcon (e.g. /cdm/falcon/tags)."
   default     = "/cdm/falcon/tags"
+  description = "The SSM Parameter Store key whose corresponding value contains a comma-delimited list of tags that are to be applied to CrowdStrike Falcon (e.g. /cdm/falcon/tags)."
+  type        = string
 }
 
 variable "nessus_hostname_key" {
-  type        = string
-  description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname)."
   default     = "/cdm/nessus_hostname"
+  description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname)."
+  type        = string
 }
 
 variable "nessus_key_key" {
-  type        = string
-  description = "The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key)."
   default     = "/cdm/nessus_key"
+  description = "The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key)."
+  type        = string
 }
 
 variable "nessus_port_key" {
-  type        = string
-  description = "The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port)."
   default     = "/cdm/nessus_port"
+  description = "The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port)."
+  type        = string
 }
 
 variable "netbios_name" {
-  type        = string
-  description = "The NetBIOS name to be used by the server (e.g. EXAMPLE).  Note that NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
   default     = "COOL"
+  description = "The NetBIOS name to be used by the server (e.g. EXAMPLE).  Note that NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  type        = string
   validation {
     condition     = length(var.netbios_name) <= 15 && length(regexall("[^A-Z0-9-]", var.netbios_name)) == 0
     error_message = "NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
@@ -57,43 +57,43 @@ variable "netbios_name" {
 }
 
 variable "provisionaccount_role_name" {
-  type        = string
-  description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account."
   default     = "ProvisionAccount"
+  description = "The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account."
+  type        = string
 }
 
 variable "provisionfreeipa_policy_description" {
-  type        = string
-  description = "The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
   default     = "Allows provisioning of FreeIPA in the Shared Services account."
+  description = "The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
+  type        = string
 }
 
 variable "provisionfreeipa_policy_name" {
-  type        = string
-  description = "The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
   default     = "ProvisionFreeIPA"
+  description = "The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
+  type        = string
 }
 
 variable "root_disk_size" {
-  type        = number
-  description = "The size of the IPA instance's root disk in GiB."
   default     = 8
+  description = "The size of the IPA instance's root disk in GiB."
+  type        = number
 }
 
 variable "tags" {
-  type        = map(string)
-  description = "Tags to apply to all AWS resources created."
   default     = {}
+  description = "Tags to apply to all AWS resources created."
+  type        = map(string)
 }
 
 variable "trusted_cidr_blocks" {
-  type        = list(string)
-  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
+  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
+  type        = list(string)
 }
 
 variable "ttl" {
-  type        = number
-  description = "The TTL value to use for Route53 DNS records (e.g. 60)."
   default     = 60
+  description = "The TTL value to use for Route53 DNS records (e.g. 60)."
+  type        = number
 }
