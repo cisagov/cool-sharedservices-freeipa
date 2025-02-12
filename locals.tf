@@ -37,4 +37,15 @@ locals {
     account.id
     if length(regexall(local.images_account_name_regex, account.name)) > 0
   ][0]
+
+  base_ipa_security_group_ids = [
+    module.security_groups.server.id,
+    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
+    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
+    # Used to pull the CDM agent parameters from SSM
+    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id
+  ]
+
+  # Conditionally include the CDM security group, which is only used in Production
+  ipa_security_group_ids = terraform.workspace == "production" ? concat(local.base_ipa_security_group_ids, [data.terraform_remote_state.cdm.outputs.cdm_security_group.id]) : local.base_ipa_security_group_ids
 }

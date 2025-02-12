@@ -48,15 +48,8 @@ module "ipa0" {
   netbios_name                              = var.netbios_name
   realm                                     = upper(var.cool_domain)
   root_disk_size                            = var.root_disk_size
-  security_group_ids = [
-    module.security_groups.server.id,
-    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
-    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
-    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
-    # Used to pull the CDM agent parameters from SSM
-    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
-  ]
-  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
+  security_group_ids                        = local.ipa_security_group_ids
+  subnet_id                                 = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[0]].id
 }
 module "ipa1" {
   providers = {
@@ -76,15 +69,8 @@ module "ipa1" {
   nessus_port_key                           = var.nessus_port_key
   netbios_name                              = var.netbios_name
   root_disk_size                            = var.root_disk_size
-  security_group_ids = [
-    module.security_groups.server.id,
-    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
-    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
-    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
-    # Used to pull the CDM agent parameters from SSM
-    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
-  ]
-  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
+  security_group_ids                        = local.ipa_security_group_ids
+  subnet_id                                 = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
 }
 module "ipa2" {
   providers = {
@@ -104,15 +90,8 @@ module "ipa2" {
   nessus_port_key                           = var.nessus_port_key
   netbios_name                              = var.netbios_name
   root_disk_size                            = var.root_disk_size
-  security_group_ids = [
-    module.security_groups.server.id,
-    data.terraform_remote_state.cdm.outputs.cdm_security_group.id,
-    data.terraform_remote_state.networking.outputs.cloudwatch_agent_endpoint_client_security_group.id,
-    data.terraform_remote_state.networking.outputs.ssm_agent_endpoint_client_security_group.id,
-    # Used to pull the CDM agent parameters from SSM
-    data.terraform_remote_state.networking.outputs.ssm_endpoint_client_security_group.id,
-  ]
-  subnet_id = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
+  security_group_ids                        = local.ipa_security_group_ids
+  subnet_id                                 = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id
 }
 
 # CloudWatch alarms for the FreeIPA instances
