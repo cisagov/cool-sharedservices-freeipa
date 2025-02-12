@@ -100,6 +100,11 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "terraform_state_bucket" {
+  description = "The name of the S3 bucket where Terraform state is stored."
+  type        = string
+}
+
 variable "trusted_cidr_blocks" {
   default     = []
   description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
