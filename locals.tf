@@ -12,21 +12,29 @@ locals {
   # Look up Shared Services account name from AWS organizations
   # provider
   sharedservices_account_name = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.name
     if account.id == local.sharedservices_account_id
   ][0]
 
-  # Determine Shared Services account type based on account name.
-  #
-  # The account name format is "ACCOUNT_NAME (ACCOUNT_TYPE)" - for
-  # example, "Shared Services (Production)".
-  sharedservices_account_type = length(regexall("\\(([^()]*)\\)", local.sharedservices_account_name)) == 1 ? regex("\\(([^()]*)\\)", local.sharedservices_account_name)[0] : "Unknown"
+  # Determine the Images account ID of the same type (production, staging, etc.)
+  # as the Shared Services account.
+  # Account name format:  "ACCOUNT_NAME (ACCOUNT_TYPE)"
+  #         For example:  "Shared Services (Production)"
+  # NOTE: Originally, Images and Shared Services account names followed the
+  # "ACCOUNT_NAME (ACCOUNT_TYPE)" format above, but our thinking has changed and
+  # in newer environments the accounts are simply called "Images" and "Shared
+  # Services".  However, until all legacy environments have been migrated to
+  # this new naming scheme, we must check the Shared Services account name via
+  # the regex below to determine whether we are using the legacy naming scheme
+  # or not.
+  sharedservices_account_name_type = length(regexall("\\(([^()]*)\\)", local.sharedservices_account_name)) == 1 ? "legacy" : "current"
 
-  # Determine the ID of the corresponding Images account
+  images_account_name_regex = local.sharedservices_account_name_type == "legacy" ? format("^Images \\(%s\\)$", trim(split("(", local.sharedservices_account_name)[1], ")")) : "^Images$"
+
   images_account_id = [
-    for account in data.aws_organizations_organization.cool.accounts :
+    for account in data.aws_organizations_organization.cool.non_master_accounts :
     account.id
-    if account.name == "Images (${local.sharedservices_account_type})"
+    if length(regexall(local.images_account_name_regex, account.name)) > 0
   ][0]
 }
