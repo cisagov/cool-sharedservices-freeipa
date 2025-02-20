@@ -1,4 +1,16 @@
 # ------------------------------------------------------------------------------
+# Required parameters
+#
+# You must provide a value for each of these parameters.
+# ------------------------------------------------------------------------------
+
+variable "terraform_state_bucket" {
+  description = "The name of the S3 bucket where Terraform state is stored."
+  nullable    = false
+  type        = string
+}
+
+# ------------------------------------------------------------------------------
 # Optional parameters
 #
 # These parameters have reasonable defaults.
@@ -98,11 +110,6 @@ variable "tags" {
   description = "Tags to apply to all AWS resources created."
   nullable    = false
   type        = map(string)
-}
-
-variable "terraform_state_bucket" {
-  description = "The name of the S3 bucket where Terraform state is stored."
-  type        = string
 }
 
 variable "trusted_cidr_blocks" {
