@@ -8,12 +8,12 @@ data "terraform_remote_state" "images_parameterstore" {
   backend = "s3"
 
   config = {
-    encrypt        = true
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-images-parameterstore/terraform.tfstate"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-images-parameterstore/terraform.tfstate"
   }
 
   workspace = terraform.workspace
@@ -23,27 +23,27 @@ data "terraform_remote_state" "master" {
   backend = "s3"
 
   config = {
-    encrypt        = true
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-accounts/master.tfstate"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-accounts/master.tfstate"
   }
 
-  workspace = "production"
+  workspace = terraform.workspace
 }
 
 data "terraform_remote_state" "networking" {
   backend = "s3"
 
   config = {
-    encrypt        = true
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-sharedservices-networking/terraform.tfstate"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-sharedservices-networking/terraform.tfstate"
   }
 
   workspace = terraform.workspace
@@ -53,12 +53,12 @@ data "terraform_remote_state" "sharedservices" {
   backend = "s3"
 
   config = {
-    encrypt        = true
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-accounts/shared_services.tfstate"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-accounts/shared_services.tfstate"
   }
 
   workspace = terraform.workspace
@@ -68,12 +68,12 @@ data "terraform_remote_state" "cdm" {
   backend = "s3"
 
   config = {
-    encrypt        = true
-    bucket         = "cisa-cool-terraform-state"
+    bucket         = var.terraform_state_bucket
     dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+    key            = "cool-sharedservices-cdm/terraform.tfstate"
     profile        = "cool-terraform-backend"
     region         = "us-east-1"
-    key            = "cool-sharedservices-cdm/terraform.tfstate"
   }
 
   workspace = terraform.workspace
