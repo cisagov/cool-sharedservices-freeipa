@@ -10,7 +10,7 @@ resource "aws_route53_health_check" "system_status_check" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  cloudwatch_alarm_name           = module.cw_alarms_ipa.system_status_check[each.key].alarm_name
+  cloudwatch_alarm_name           = module.cw_alarms_ipa[each.key].system_status_check.alarm_name
   cloudwatch_alarm_region         = var.aws_region
   insufficient_data_health_status = "Unhealthy"
   reference_name                  = each.value.hostname
@@ -25,7 +25,7 @@ resource "aws_route53_health_check" "instance_status_check" {
   }
   provider = aws.sharedservicesprovisionaccount
 
-  cloudwatch_alarm_name           = module.cw_alarms_ipa.instance_status_check[each.key].alarm_name
+  cloudwatch_alarm_name           = module.cw_alarms_ipa[each.key].instance_status_check.alarm_name
   cloudwatch_alarm_region         = var.aws_region
   insufficient_data_health_status = "Unhealthy"
   reference_name                  = each.value.hostname
