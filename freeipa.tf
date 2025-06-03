@@ -101,7 +101,7 @@ module "cw_alarms_ipa" {
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
-  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=improvement%2Fonly-handle-a-single-instance"
+  source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
   alarm_actions             = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
   instance_id               = each.value
