@@ -96,17 +96,15 @@ module "ipa2" {
 
 # CloudWatch alarms for the FreeIPA instances
 module "cw_alarms_ipa" {
+  for_each = toset([module.ipa0.server.id, module.ipa1.server.id, module.ipa2.server.id])
+
   providers = {
     aws = aws.sharedservicesprovisionaccount
   }
   source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
-  alarm_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
-  instance_ids = [
-    module.ipa0.server.id,
-    module.ipa1.server.id,
-    module.ipa2.server.id,
-  ]
+  alarm_actions             = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
+  instance_id               = each.value
   insufficient_data_actions = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
   ok_actions                = [data.terraform_remote_state.sharedservices.outputs.cw_alarm_sns_topic.arn]
 }
