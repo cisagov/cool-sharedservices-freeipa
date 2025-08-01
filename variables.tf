@@ -44,6 +44,13 @@ variable "crowdstrike_falcon_sensor_tags_key" {
   type        = string
 }
 
+variable "nessus_groups" {
+  default     = ["COOL_Fed_32"]
+  description = "A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. [\"group1\", \"group2\"])."
+  nullable    = false
+  type        = list(string)
+}
+
 variable "nessus_hostname_key" {
   default     = "/cdm/nessus_hostname"
   description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname)."
