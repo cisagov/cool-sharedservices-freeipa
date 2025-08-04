@@ -42,6 +42,7 @@ module "ipa0" {
   domain                                    = var.cool_domain
   hostname                                  = "ipa0.${var.cool_domain}"
   ip                                        = local.ipa_ips[0]
+  nessus_groups                             = var.nessus_groups
   nessus_hostname_key                       = var.nessus_hostname_key
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
@@ -64,6 +65,7 @@ module "ipa1" {
   domain                                    = var.cool_domain
   hostname                                  = "ipa1.${var.cool_domain}"
   ip                                        = local.ipa_ips[1]
+  nessus_groups                             = var.nessus_groups
   nessus_hostname_key                       = var.nessus_hostname_key
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
@@ -85,6 +87,7 @@ module "ipa2" {
   domain                                    = var.cool_domain
   hostname                                  = "ipa2.${var.cool_domain}"
   ip                                        = local.ipa_ips[2]
+  nessus_groups                             = var.nessus_groups
   nessus_hostname_key                       = var.nessus_hostname_key
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
