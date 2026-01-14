@@ -1,6 +1,8 @@
 # cool-sharedservices-freeipa #
 
 [![GitHub Build Status](https://github.com/cisagov/cool-sharedservices-freeipa/workflows/build/badge.svg)](https://github.com/cisagov/cool-sharedservices-freeipa/actions)
+[![License](https://img.shields.io/github/license/cisagov/cool-sharedservices-freeipa)](https://spdx.org/licenses/)
+[![CodeQL](https://github.com/cisagov/cool-sharedservices-freeipa/workflows/CodeQL/badge.svg)](https://github.com/cisagov/cool-sharedservices-freeipa/actions/workflows/codeql-analysis.yml)
 
 This is a Terraform module for creating a FreeIPA server cluster in
 the COOL shared services environment.  This deployment should be laid
