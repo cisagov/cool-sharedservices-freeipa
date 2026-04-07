@@ -18,14 +18,14 @@ module "example" {
 ## Requirements ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | terraform | >= 1.1 |
 | aws | >= 4.9 |
 
 ## Providers ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | aws | >= 4.9 |
 
 ## Modules ##
@@ -35,7 +35,7 @@ No modules.
 ## Resources ##
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_security_group.client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.client_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -49,14 +49,14 @@ No modules.
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | trusted\_cidr\_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
 | vpc\_id | The ID of the VPC where the IPA cluster is to be instantiated (e.g. vpc-2f09a348). | `string` | n/a | yes |
 
 ## Outputs ##
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | client | The IPA client security group. |
 | server | The IPA server security group. |
 <!-- END_TF_DOCS -->
