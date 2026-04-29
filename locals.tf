@@ -6,11 +6,10 @@ locals {
   # as assume role session names.
   caller_user_name = split("/", data.aws_caller_identity.current.arn)[1]
 
-  # Look up the account ID of the "Images" account from AWS Organizations.
+  # Find the "Images" account ID by name.
   images_account_id = [
     for account in data.aws_organizations_organization.cool.non_master_accounts :
-    account.id
-    if length(regexall("^Images$", account.name)) > 0
+    account.id if account.name == "Images"
   ][0]
 
   base_ipa_security_group_ids = [
