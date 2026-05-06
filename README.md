@@ -23,7 +23,7 @@ down on top of
 
 ```hcl
 module "example" {
-  source = "github.com/cisagov/cool-sharedservices-freeipa?ref=v1.2.1"
+  source = "github.com/cisagov/cool-sharedservices-freeipa?ref=v1.3.0"
 
   aws_region          = "us-east-1"
   cool_domain         = "example.com"
