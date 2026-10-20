@@ -34,7 +34,7 @@ module "ipa0" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa0
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
@@ -47,6 +47,11 @@ module "ipa0" {
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
   netbios_name                              = var.netbios_name
+  qualys_cloud_agent_activation_id_key      = var.qualys_cloud_agent_activation_id_key
+  qualys_cloud_agent_customer_id_key        = var.qualys_cloud_agent_customer_id_key
+  qualys_cloud_agent_fedramp                = var.qualys_cloud_agent_fedramp
+  qualys_cloud_agent_install_path           = var.qualys_cloud_agent_install_path
+  qualys_cloud_agent_server_uri_key         = var.qualys_cloud_agent_server_uri_key
   realm                                     = upper(var.cool_domain)
   root_disk_size                            = var.root_disk_size
   security_group_ids                        = local.ipa_security_group_ids
@@ -57,7 +62,7 @@ module "ipa1" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa1
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
@@ -70,6 +75,11 @@ module "ipa1" {
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
   netbios_name                              = var.netbios_name
+  qualys_cloud_agent_activation_id_key      = var.qualys_cloud_agent_activation_id_key
+  qualys_cloud_agent_customer_id_key        = var.qualys_cloud_agent_customer_id_key
+  qualys_cloud_agent_fedramp                = var.qualys_cloud_agent_fedramp
+  qualys_cloud_agent_install_path           = var.qualys_cloud_agent_install_path
+  qualys_cloud_agent_server_uri_key         = var.qualys_cloud_agent_server_uri_key
   root_disk_size                            = var.root_disk_size
   security_group_ids                        = local.ipa_security_group_ids
   subnet_id                                 = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[1]].id
@@ -79,7 +89,7 @@ module "ipa2" {
     aws                                   = aws.sharedservicesprovisionaccount_ipa2
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent"
 
   ami_owner_account_id                      = local.images_account_id
   crowdstrike_falcon_sensor_customer_id_key = var.crowdstrike_falcon_sensor_customer_id_key
@@ -92,6 +102,11 @@ module "ipa2" {
   nessus_key_key                            = var.nessus_key_key
   nessus_port_key                           = var.nessus_port_key
   netbios_name                              = var.netbios_name
+  qualys_cloud_agent_activation_id_key      = var.qualys_cloud_agent_activation_id_key
+  qualys_cloud_agent_customer_id_key        = var.qualys_cloud_agent_customer_id_key
+  qualys_cloud_agent_fedramp                = var.qualys_cloud_agent_fedramp
+  qualys_cloud_agent_install_path           = var.qualys_cloud_agent_install_path
+  qualys_cloud_agent_server_uri_key         = var.qualys_cloud_agent_server_uri_key
   root_disk_size                            = var.root_disk_size
   security_group_ids                        = local.ipa_security_group_ids
   subnet_id                                 = data.terraform_remote_state.networking.outputs.private_subnets[local.subnet_cidrs[2]].id

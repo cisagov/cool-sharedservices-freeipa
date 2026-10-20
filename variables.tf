@@ -4,6 +4,20 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
+variable "qualys_cloud_agent_fedramp" {
+  default     = true
+  description = "Whether or not the Qualys Cloud Agent should be concerned about FEDRAMP."
+  nullable    = false
+  type        = bool
+}
+
+variable "qualys_cloud_agent_install_path" {
+  default     = "/usr/local/qualys/cloud-agent"
+  description = "The install path of the Qualys Cloud Agent (e.g. /usr/local/qualys/cloud-agent)."
+  nullable    = false
+  type        = string
+}
+
 variable "terraform_state_bucket" {
   description = "The name of the S3 bucket where Terraform state is stored."
   nullable    = false
@@ -101,6 +115,27 @@ variable "provisionfreeipa_policy_description" {
 variable "provisionfreeipa_policy_name" {
   default     = "ProvisionFreeIPA"
   description = "The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account."
+  nullable    = false
+  type        = string
+}
+
+variable "qualys_cloud_agent_activation_id_key" {
+  default     = "/cdm/qualys/activation_id"
+  description = "The SSM Parameter Store key whose corresponding value contains the activation ID for Qualys Cloud Agent (e.g. /cdm/qualys/activation_id)."
+  nullable    = false
+  type        = string
+}
+
+variable "qualys_cloud_agent_customer_id_key" {
+  default     = "/cdm/qualys/customer_id"
+  description = "The SSM Parameter Store key whose corresponding value contains the customer ID for Qualys Cloud Agent (e.g. /cdm/qualys/customer_id)."
+  nullable    = false
+  type        = string
+}
+
+variable "qualys_cloud_agent_server_uri_key" {
+  default     = "/cdm/qualys/server_uri"
+  description = "The SSM Parameter Store key whose corresponding value contains the server URI for Qualys Cloud Agent (e.g. /cdm/qualys/server_uri)."
   nullable    = false
   type        = string
 }
