@@ -23,7 +23,7 @@ down on top of
 
 ```hcl
 module "example" {
-  source = "github.com/cisagov/cool-sharedservices-freeipa?ref=v1.3.0"
+  source = "github.com/cisagov/cool-sharedservices-freeipa?ref=v2.0.0"
 
   aws_region          = "us-east-1"
   cool_domain         = "example.com"
@@ -56,9 +56,9 @@ module "example" {
 | Name | Source | Version |
 | ---- | ------ | ------- |
 | cw\_alarms\_ipa | github.com/cisagov/instance-cw-alarms-tf-module | n/a |
-| ipa0 | github.com/cisagov/freeipa-server-tf-module | n/a |
-| ipa1 | github.com/cisagov/freeipa-server-tf-module | n/a |
-| ipa2 | github.com/cisagov/freeipa-server-tf-module | n/a |
+| ipa0 | github.com/cisagov/freeipa-server-tf-module | feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent |
+| ipa1 | github.com/cisagov/freeipa-server-tf-module | feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent |
+| ipa2 | github.com/cisagov/freeipa-server-tf-module | feature%2Fadd-cloud-init-script-to-configure-qualys-cloud-agent |
 | security\_groups | ./security_groups | n/a |
 
 ## Resources ##
@@ -109,6 +109,11 @@ module "example" {
 | provisionaccount\_role\_name | The name of the IAM role that allows sufficient permissions to provision all AWS resources in the Shared Services account. | `string` | `"ProvisionAccount"` | no |
 | provisionfreeipa\_policy\_description | The description to associate with the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `"Allows provisioning of FreeIPA in the Shared Services account."` | no |
 | provisionfreeipa\_policy\_name | The name to assign the IAM policy that allows provisioning of FreeIPA in the Shared Services account. | `string` | `"ProvisionFreeIPA"` | no |
+| qualys\_cloud\_agent\_activation\_id\_key | The SSM Parameter Store key whose corresponding value contains the activation ID for Qualys Cloud Agent (e.g. /cdm/qualys/activation\_id). | `string` | `"/cdm/qualys/activation_id"` | no |
+| qualys\_cloud\_agent\_customer\_id\_key | The SSM Parameter Store key whose corresponding value contains the customer ID for Qualys Cloud Agent (e.g. /cdm/qualys/customer\_id). | `string` | `"/cdm/qualys/customer_id"` | no |
+| qualys\_cloud\_agent\_fedramp | Whether or not the Qualys Cloud Agent should be concerned about FEDRAMP. | `bool` | `true` | no |
+| qualys\_cloud\_agent\_install\_path | The install path of the Qualys Cloud Agent (e.g. /usr/local/qualys/cloud-agent). | `string` | `"/usr/local/qualys/cloud-agent"` | no |
+| qualys\_cloud\_agent\_server\_uri\_key | The SSM Parameter Store key whose corresponding value contains the server URI for Qualys Cloud Agent (e.g. /cdm/qualys/server\_uri). | `string` | `"/cdm/qualys/server_uri"` | no |
 | root\_disk\_size | The size of the IPA instance's root disk in GiB. | `number` | `8` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
 | terraform\_state\_bucket | The name of the S3 bucket where Terraform state is stored. | `string` | n/a | yes |
